@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+<<<<<<< HEAD
     'dash_postos',
+=======
+>>>>>>> 5c8bbf3c846bd4c215f908588cdb6d2f42950ad8
     'postos_app'
 ]
 

@@ -27,6 +27,7 @@ class Postos(models.Model):
     def clean(self):
         if self.produto and 'GLP' in self.produto.upper():
             raise ValidationError("O produto GLP não é permitido neste sistema.")
+<<<<<<< HEAD
     def save(self, *args, **kwargs):
         """Auto-preencher região ao salvar"""
         self.regiao = self.get_regiao_from_estado()
@@ -47,3 +48,9 @@ def regiao(self):
         if estado_upper in estados:
             return regiao
     return 'DESCONHECIDA'
+=======
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+>>>>>>> 5c8bbf3c846bd4c215f908588cdb6d2f42950ad8
