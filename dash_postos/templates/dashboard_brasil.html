@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard de Postos - Brasil{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="my-4">Dashboard de Postos - Brasil</h1>
+    
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label for="regiao" class="form-label">Região</label>
+                    <select name="regiao" id="regiao" class="form-select">
+                        <option value="">Todas</option>
+                        <option value="NORTE" {% if request.GET.regiao == "NORTE" %}selected{% endif %}>Norte</option>
+                        <option value="NORDESTE" {% if request.GET.regiao == "NORDESTE" %}selected{% endif %}>Nordeste</option>
+                        <option value="CENTRO-OESTE" {% if request.GET.regiao == "CENTRO-OESTE" %}selected{% endif %}>Centro-Oeste</option>
+                        <option value="SUDESTE" {% if request.GET.regiao == "SUDESTE" %}selected{% endif %}>Sudeste</option>
+                        <option value="SUL" {% if request.GET.regiao == "SUL" %}selected{% endif %}>Sul</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select name="estado" id="estado" class="form-select">
+                        <option value="">Todos</option>
+                        {% for estado in estados %}
+                        <option value="{{ estado }}" {% if request.GET.estado == estado %}selected{% endif %}>{{ estado }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <label for="produto" class="form-label">Produto</label>
+                    <select name="produto" id="produto" class="form-select">
+                        <option value="">Todos</option>
+                        {% for produto in produtos %}
+                        <option value="{{ produto }}" {% if request.GET.produto == produto %}selected{% endif %}>{{ produto }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Seção de Gráficos -->
+    <div class="row">
+        <!-- Gráfico 1 -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    Preço Médio por Produto
+                </div>
+                <div class="card-body text-center">
+                    <img src="data:image/png;base64,{{ grafico_preco }}" 
+                         alt="Gráfico de Preços" 
+                         class="img-fluid"
+                         style="max-width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gráfico 2 -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-map-marked-alt me-1"></i>
+                    Distribuição por Estado
+                </div>
+                <div class="card-body text-center">
+                    <img src="data:image/png;base64,{{ grafico_estados }}" 
+                         alt="Gráfico de Estados" 
+                         class="img-fluid"
+                         style="max-width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Postos Cadastrados</h5>
+                    <h2 class="card-text">{{ total_postos }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Preço Médio</h5>
+                    <h2 class="card-text">R$ {{ preco_medio|floatformat:2 }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Estados Atendidos</h5>
+                    <h2 class="card-text">{{ total_estados }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Postos -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Razão Social</th>
+                            <th>Município/UF</th>
+                            <th>Bandeira</th>
+                            <th>Produto</th>
+                            <th>Preço (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for posto in postos %}
+                        <tr>
+                            <td>{{ posto.razao }}</td>
+                            <td>{{ posto.municipio }}/{{ posto.estado }}</td>
+                            <td>{{ posto.bandeira }}</td>
+                            <td>{{ posto.produto }}</td>
+                            <td>{{ posto.preco_revenda|floatformat:2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Nenhum posto encontrado</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginação -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if postos.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                            &laquo; Primeira
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in postos.paginator.page_range %}
+                        {% if postos.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                {{ num }}
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if postos.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ postos.paginator.num_pages }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                            Última &raquo;
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
