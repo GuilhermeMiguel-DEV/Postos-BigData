@@ -1,7 +1,12 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.db.models import Avg, Count
-import matplotlib.pyplot as plt
+
+import matplotlib
+# Configura o backend para 'Agg' ANTES de importar pyplot
+matplotlib.use('Agg')  # Isso evita o uso do Tkinter
+from matplotlib import pyplot as plt
+
 import base64
 from io import BytesIO
 from postos_app.models import Postos
@@ -18,7 +23,7 @@ def dash_graficos(request):
 
     def gerar_grafico(labels, valores, titulo, eixo_y):
         """Função auxiliar para gerar gráficos"""
-        plt.figure(figsize=(10, 5))
+        plt.figure(figsize=(15, 8))
         plt.bar(labels, valores, color='#3498db')
         plt.title(titulo, pad=20)
         plt.ylabel(eixo_y)
@@ -32,7 +37,7 @@ def dash_graficos(request):
 
     # Filtros
     postos = Postos.objects.all()
-    postos.exclude(produto__iexact='GLP')
+    postos = postos.exclude(produto__iexact='GLP')
     regiao = request.GET.get('regiao')
     estado = request.GET.get('estado')
     produto = request.GET.get('produto')
@@ -43,7 +48,7 @@ def dash_graficos(request):
     if estado:
         postos = postos.filter(estado__iexact=estado)
     if produto:
-        postos = postos.filter(produto__iexact=produto).exclude(produto__iexact='GLP')
+        postos = postos.filter(produto__iexact=produto)
 
     # Paginação
     paginador = Paginator(postos.order_by('estado', 'municipio'), 25)
@@ -66,7 +71,7 @@ def dash_graficos(request):
 
     dados_estados = postos.values('estado').annotate(
         total=Count('id')
-    ).order_by('-total')[:10]
+    ).order_by('-total')[:5]
 
     grafico_estados = gerar_grafico(
         labels=[e['estado'] for e in dados_estados],
