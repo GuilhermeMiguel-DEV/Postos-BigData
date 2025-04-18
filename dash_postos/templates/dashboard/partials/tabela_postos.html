@@ -1,0 +1,31 @@
+<!-- Tabela de Postos -->
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Razão Social</th>
+                        <th>Município/UF</th>
+                        <th>Bandeira</th>
+                        <th>Produto</th>
+                        <th>Preço (R$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for posto in postos %}
+                    <tr>
+                        <td>{{ posto.razao }}</td>
+                        <td>{{ posto.municipio }}/{{ posto.estado }}</td>
+                        <td>{{ posto.bandeira }}</td>
+                        <td>{{ posto.produto }}</td>
+                        <td>{{ posto.preco_revenda|floatformat:2 }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Nenhum posto encontrado</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
