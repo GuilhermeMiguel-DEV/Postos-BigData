@@ -30,12 +30,28 @@ class Postos(models.Model):
         """Validação do modelo"""
         if self.produto and 'GLP' in self.produto.upper():
             raise ValidationError("O produto GLP não é permitido neste sistema.")
-
+            
     def save(self, *args, **kwargs):
-        """Sobrescrita do save com validação"""
-        self.full_clean()
-        self.regiao = self._get_regiao_from_estado()  # Atualiza a região antes de salvar
+        """Auto-preencher região ao salvar"""
+        self.regiao = self.get_regiao_from_estado()
         super().save(*args, **kwargs)
+    
+@property
+def regiao(self):
+    """Determina a região com base no estado"""
+    REGIOES_BRASIL = {
+        'NORTE': ['ACRE', 'AMAPÁ', 'AMAZONAS', 'PARÁ', 'RONDÔNIA', 'RORAIMA', 'TOCANTINS'],
+        'NORDESTE': ['ALAGOAS', 'BAHIA', 'CEARÁ', 'MARANHÃO', 'PARAÍBA', 'PERNAMBUCO', 'PIAUÍ', 'RIO GRANDE DO NORTE', 'SERGIPE'],
+        'CENTRO-OESTE': ['DISTRITO FEDERAL', 'GOIÁS', 'MATO GROSSO', 'MATO GROSSO DO SUL'],
+        'SUDESTE': ['ESPÍRITO SANTO', 'MINAS GERAIS', 'RIO DE JANEIRO', 'SÃO PAULO'],
+        'SUL': ['PARANÁ', 'RIO GRANDE DO SUL', 'SANTA CATARINA']
+    }
+    estado_upper = self.estado.upper().strip()
+    for regiao, estados in REGIOES_BRASIL.items():
+        if estado_upper in estados:
+            return regiao
+    return 'DESCONHECIDA'
+    
 
     def _get_regiao_from_estado(self):
         """Método interno para determinar a região"""
@@ -58,6 +74,3 @@ class Postos(models.Model):
         if hasattr(self, '_regiao'):
             return self._regiao
         return self._get_regiao_from_estado()
-
-    
-   
