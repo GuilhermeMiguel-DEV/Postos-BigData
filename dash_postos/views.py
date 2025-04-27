@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Avg, Count
 
@@ -6,12 +6,16 @@ import matplotlib
 # Configura o backend para 'Agg' ANTES de importar pyplot
 matplotlib.use('Agg')  # Isso evita o uso do Tkinter
 from matplotlib import pyplot as plt
+import pandas as pd
 
 import base64
 from io import BytesIO
-from postos_app.models import Postos
+import unicodedata
 
-def dash_graficos(request):
+from postos_app.models import Postos
+from .utils import normalizar_nome
+
+def dashboard_brasil(request):
     # Configurações das regiões
     REGIOES_BRASIL = {
         'NORTE': ['ACRE', 'AMAPÁ', 'AMAZONAS', 'PARÁ', 'RONDÔNIA', 'RORAIMA', 'TOCANTINS'],
@@ -99,3 +103,90 @@ def dash_graficos(request):
     }
 
     return render(request, 'dashboard/dashboard_brasil.html', contexto)
+
+
+def dashboard_cidade(request):
+    municipio = request.GET.get('munmunicipio', '').strip()
+    produto = request.GET.get('produto', '').strip()
+    
+    # Se cidade estiver vazia, redireciona para o dashboard Brasil
+    if not municipio:
+        return redirect('dashboard_brasil')
+    
+    # Filtra os postos pelo municipio (case-insensitive)
+    postos = Postos.objects.filter(
+        municipio__unaccent__iexact=municipio
+    ).exclude(
+        bairro__isnull=True
+    ).exclude(
+        bairro__exact=''
+    )
+    
+    # Filtro adicional por produto se especificado
+    if produto:
+        postos = postos.filter(produto__iexact=produto)
+    
+    # Normaliza os nomes dos bairros e agrupa
+    dados_bairros = []
+    for posto in postos:
+        dados_bairros.append({
+            'bairro_normalizado': normalizar_nome(posto.bairro),
+            'preco': float(posto.preco_revenda),
+            'bandeira': posto.bandeira
+        })
+    
+    # Cria DataFrame para análise
+    df = pd.DataFrame(dados_bairros)
+    
+    # Se não houver dados, mostra mensagem
+    if df.empty:
+        return render(request, 'dashboard/dashboard_cidade.html', {
+            'cidade': municipio,
+            'sem_dados': True
+        })
+    
+    # Agrupa por bairro para estatísticas
+    bairros_stats = df.groupby('bairro_normalizado').agg(
+        total_postos=('bairro_normalizado', 'size'),
+        preco_medio=('preco', 'mean')
+    ).reset_index().sort_values('total_postos', ascending=False)
+    
+    # Cria gráfico de barras de postos por bairro
+    plt.figure(figsize=(10, 6))
+    ax = bairros_stats.head(10).plot.bar(
+        x='bairro_normalizado', 
+        y='total_postos',
+        color='skyblue',
+        legend=False
+    )
+    plt.title(f'Top 10 Bairros com Mais Postos em {municipio}')
+    plt.xlabel('Bairro')
+    plt.ylabel('Número de Postos')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    
+    # Converte gráfico para imagem base64
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    grafico_bairros = base64.b64encode(buffer.read()).decode('utf-8')
+    plt.close()
+    
+    # Prepara dados para a tabela
+    tabela_bairros = bairros_stats.to_dict('records')
+    
+    # Calcula estatísticas gerais
+    total_postos_cidade = len(df)
+    preco_medio_cidade = df['preco'].mean()
+    total_bairros = len(bairros_stats)
+    
+    return render(request, 'dashboard/dashboard_cidade.html', {
+        'municipio': municipio,
+        'produto': produto or 'Todos',
+        'grafico_bairros': grafico_bairros,
+        'tabela_bairros': tabela_bairros,
+        'total_postos_cidade': total_postos_cidade,
+        'preco_medio_cidade': round(preco_medio_cidade, 2),
+        'total_bairros': total_bairros,
+        'top_bairros': bairros_stats.head(10).to_dict('records')
+    })

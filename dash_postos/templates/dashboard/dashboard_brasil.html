@@ -5,73 +5,124 @@
 {% block content %}
 <div class="container-fluid">
     <h1 class="my-4">Dashboard de Postos - Brasil</h1>
-    
-    <!-- Filtros -->
-    {% include 'dashboard/partials/filtros.html' %}
 
-    <!-- Seção de Gráficos -->
-    <div class="row">
-        <!-- Gráfico 1 -->
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-bar me-1"></i>
-                    Preço Médio por Produto
-                </div>
-                <div class="card-body text-center">
-                    <img src="data:image/png;base64,{{ grafico_preco }}" 
-                         alt="Gráfico de Preços" 
-                         class="img-fluid"
-                         style="max-width: 100%; height: auto;">
-                </div>
-            </div>
-        </div>
-        
-        <!-- Gráfico 2 -->
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-map-marked-alt me-1"></i>
-                    Distribuição por Estado
-                </div>
-                <div class="card-body text-center">
-                    <img src="data:image/png;base64,{{ grafico_estados }}" 
-                         alt="Gráfico de Estados" 
-                         class="img-fluid"
-                         style="max-width: 100%; height: auto;">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Estatísticas -->
+    <!-- Barra de Pesquisa por Cidade - MODIFICADA PARA REDIRECIONAMENTO -->
     <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card text-white bg-primary h-100">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Postos Cadastrados</h5>
-                    <h2 class="card-text">{{ total_postos }}</h2>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card text-white bg-success h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Preço Médio</h5>
-                    <h2 class="card-text">R$ {{ preco_medio|floatformat:2 }}</h2>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card text-white bg-info h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Estados Atendidos</h5>
-                    <h2 class="card-text">{{ total_estados }}</h2>
+                    <form id="cidadeForm" method="get" action="{% url 'dashboard_cidade' %}">
+                        <div class="input-group">
+                            <input type="text" 
+                                   class="form-control" 
+                                   name="cidade" 
+                                   id="cidadeInput"
+                                   placeholder="Digite uma cidade..."
+                                   aria-label="Pesquisar cidade"
+                                   value="{{ request.GET.cidade|default:'' }}"
+                                   required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i> Pesquisar
+                            </button>
+                        </div>
+                        <!-- Mantém o filtro de produto se existir -->
+                        {% if request.GET.produto %}
+                        <input type="hidden" name="produto" value="{{ request.GET.produto }}">
+                        {% endif %}
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Conteúdo do Dashboard Brasil (só mostra se não houver pesquisa de cidade) -->
+    {% if not request.GET.cidade %}
+        <!-- Filtros -->
+        {% include 'dashboard/partials/filtros.html' %}
+
+        <!-- Seção de Gráficos -->
+        <div class="row">
+            <!-- Gráfico 1 -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Preço Médio por Produto
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="data:image/png;base64,{{ grafico_preco }}" 
+                             alt="Gráfico de Preços" 
+                             class="img-fluid"
+                             style="max-width: 100%; height: auto;">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gráfico 2 -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-map-marked-alt me-1"></i>
+                        Distribuição por Estado
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="data:image/png;base64,{{ grafico_estados }}" 
+                             alt="Gráfico de Estados" 
+                             class="img-fluid"
+                             style="max-width: 100%; height: auto;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Postos Cadastrados</h5>
+                        <h2 class="card-text">{{ total_postos }}</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card text-white bg-success h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Preço Médio</h5>
+                        <h2 class="card-text">R$ {{ preco_medio|floatformat:2 }}</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card text-white bg-info h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Estados Atendidos</h5>
+                        <h2 class="card-text">{{ total_estados }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
+
+<!-- JavaScript para tratamento do formulário -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('cidadeForm');
+    const input = document.getElementById('cidadeInput');
+    
+    form.addEventListener('submit', function(e) {
+        // Validação básica - não faz nada se o campo estiver vazio
+        if (input.value.trim() === '') {
+            e.preventDefault();
+            // Opcional: mostrar mensagem para o usuário
+            alert('Por favor, digite o nome de uma cidade');
+            input.focus();
+        }
+        // Se estiver preenchido, o formulário segue normalmente para dashboard_cidade
+    });
+});
+</script>
 {% endblock %}

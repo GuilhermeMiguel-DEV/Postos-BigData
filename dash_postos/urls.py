@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import dash_graficos
+from .views import dashboard_brasil, dashboard_cidade
 
 urlpatterns = [
-    path('dash_brasil/', dash_graficos, name='graficos_postos')
+    path('dashboard_brasil/', dashboard_brasil, name='dashboard_brasil'),
+    path('dashboard_cidade/', dashboard_cidade, name='dashboard_cidade')
 ]
