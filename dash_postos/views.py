@@ -10,10 +10,9 @@ import pandas as pd
 
 import base64
 from io import BytesIO
-import unicodedata
 
 from postos_app.models import Postos
-from .utils import normalizar_nome
+from .utils import normalizar_nome, gerar_grafico
 
 def dashboard_brasil(request):
     # Configurações das regiões
@@ -25,26 +24,14 @@ def dashboard_brasil(request):
         'SUL': ['PARANÁ', 'RIO GRANDE DO SUL', 'SANTA CATARINA']
     }
 
-    def gerar_grafico(labels, valores, titulo, eixo_y):
-        """Função auxiliar para gerar gráficos"""
-        plt.figure(figsize=(15, 8))
-        plt.bar(labels, valores, color='#3498db')
-        plt.title(titulo, pad=20)
-        plt.ylabel(eixo_y)
-        plt.xticks(rotation=45, ha='right')
-        plt.tight_layout()
-        
-        buffer = BytesIO()
-        plt.savefig(buffer, format='png', dpi=80, bbox_inches='tight')
-        plt.close()
-        return base64.b64encode(buffer.getvalue()).decode()
-
     # Filtros
     postos = Postos.objects.all()
     postos = postos.exclude(produto__iexact='GLP')
+
+    #Receber os filtros vindo do GET caso alguém decida filtrar os dados da página inicial
     regiao = request.GET.get('regiao')
     estado = request.GET.get('estado')
-    produto = request.GET.get('produto')
+    produto= request.GET.get('produto')
 
     # Aplicação dos filtros
     if regiao:
@@ -106,7 +93,7 @@ def dashboard_brasil(request):
 
 
 def dashboard_cidade(request):
-    municipio = request.GET.get('munmunicipio', '').strip()
+    municipio = request.GET.get('municipio', '').strip()
     produto = request.GET.get('produto', '').strip()
     
     # Se cidade estiver vazia, redireciona para o dashboard Brasil
@@ -115,7 +102,7 @@ def dashboard_cidade(request):
     
     # Filtra os postos pelo municipio (case-insensitive)
     postos = Postos.objects.filter(
-        municipio__unaccent__iexact=municipio
+        municipio__iexact=municipio
     ).exclude(
         bairro__isnull=True
     ).exclude(
