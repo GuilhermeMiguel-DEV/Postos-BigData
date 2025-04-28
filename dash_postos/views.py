@@ -107,7 +107,7 @@ def dashboard_cidade(request):
         bairro__isnull=True
     ).exclude(
         bairro__exact=''
-    )
+    ).exclude(produto__iexact='GLP')
     
     # Filtro adicional por produto se especificado
     if produto:
@@ -119,7 +119,9 @@ def dashboard_cidade(request):
         dados_bairros.append({
             'bairro_normalizado': normalizar_nome(posto.bairro),
             'preco': float(posto.preco_revenda),
-            'bandeira': posto.bandeira
+            'bandeira': posto.bandeira,
+            'numero': posto.numero,
+            'endereco': posto.endereco
         })
     
     # Cria DataFrame para análise
@@ -163,6 +165,10 @@ def dashboard_cidade(request):
     tabela_bairros = bairros_stats.to_dict('records')
     
     # Calcula estatísticas gerais
+    postos_unicos = df.drop_duplicates(subset=['numero'])
+    print(postos_unicos)
+    print('='*15)
+    print(df)
     total_postos_cidade = len(df)
     preco_medio_cidade = df['preco'].mean()
     total_bairros = len(bairros_stats)

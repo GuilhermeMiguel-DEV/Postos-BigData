@@ -5,44 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/templates/base.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/templates/dashboard/dashboard_brasil.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/templates/dashboard/partials/filtros.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/db.sqlite3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/importexcel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/templates/postos_app/postos_tabela.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/requeriment.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash_postos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,7 +63,7 @@
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "dashboard-cidades-jv",
+    "git-widget-placeholder": "nova-mod",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/joao0/Documents/GitHub/Postos-BigData",
     "node.js.detected.package.eslint": "true",
