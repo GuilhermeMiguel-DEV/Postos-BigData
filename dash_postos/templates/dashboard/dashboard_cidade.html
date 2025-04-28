@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard de Postos - {{ cidade }}{% endblock %}
+{% block title %}Dashboard de Postos - {{ municipio }}{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
     <!-- Cabeçalho -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Dashboard de Postos - {{ cidade }}</h1>
+        <h1>Dashboard de Postos - {{ municipio }}</h1>
         <a href="{% url 'dashboard_brasil' %}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Voltar para dashboard do Brasil
         </a>
@@ -22,7 +22,7 @@
     
     {% if sem_dados %}
         <div class="alert alert-warning">
-            <h4>Nenhum dado encontrado para {{ cidade }}</h4>
+            <h4>Nenhum dado encontrado para {{ municipio }}</h4>
             <p>Não encontramos postos cadastrados nesta cidade.</p>
         </div>
     {% else %}
@@ -31,7 +31,7 @@
             <div class="col-md-4">
                 <div class="card text-white bg-primary h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Postos na Cidade</h5>
+                        <h5 class="card-title">Postos no Municipio</h5>
                         <h2 class="card-text">{{ total_postos_cidade }}</h2>
                     </div>
                 </div>

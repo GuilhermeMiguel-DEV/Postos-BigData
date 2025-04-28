@@ -106,7 +106,7 @@ def dashboard_brasil(request):
 
 
 def dashboard_cidade(request):
-    municipio = request.GET.get('munmunicipio', '').strip()
+    municipio = request.GET.get('municipio', '').strip()
     produto = request.GET.get('produto', '').strip()
     
     # Se cidade estiver vazia, redireciona para o dashboard Brasil
@@ -115,12 +115,8 @@ def dashboard_cidade(request):
     
     # Filtra os postos pelo municipio (case-insensitive)
     postos = Postos.objects.filter(
-        municipio__unaccent__iexact=municipio
-    ).exclude(
-        bairro__isnull=True
-    ).exclude(
-        bairro__exact=''
-    )
+        municipio__iexact=municipio
+    ).exclude(produto__iexact='GLP')
     
     # Filtro adicional por produto se especificado
     if produto:
@@ -132,7 +128,7 @@ def dashboard_cidade(request):
         dados_bairros.append({
             'bairro_normalizado': normalizar_nome(posto.bairro),
             'preco': float(posto.preco_revenda),
-            'bandeira': posto.bandeira
+            'bandeira': posto.bandeira,
         })
     
     # Cria DataFrame para análise
@@ -141,7 +137,7 @@ def dashboard_cidade(request):
     # Se não houver dados, mostra mensagem
     if df.empty:
         return render(request, 'dashboard/dashboard_cidade.html', {
-            'cidade': municipio,
+            'municipio': municipio,
             'sem_dados': True
         })
     
@@ -179,8 +175,8 @@ def dashboard_cidade(request):
     total_postos_cidade = len(df)
     preco_medio_cidade = df['preco'].mean()
     total_bairros = len(bairros_stats)
-    
-    return render(request, 'dashboard/dashboard_cidade.html', {
+
+    contexto = {
         'municipio': municipio,
         'produto': produto or 'Todos',
         'grafico_bairros': grafico_bairros,
@@ -189,4 +185,6 @@ def dashboard_cidade(request):
         'preco_medio_cidade': round(preco_medio_cidade, 2),
         'total_bairros': total_bairros,
         'top_bairros': bairros_stats.head(10).to_dict('records')
-    })
+    }
+    
+    return render(request, 'dashboard/dashboard_cidade.html', contexto)
