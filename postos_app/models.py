@@ -31,10 +31,10 @@ class Postos(models.Model):
         if self.produto and 'GLP' in self.produto.upper():
             raise ValidationError("O produto GLP não é permitido neste sistema.")
             
-    def save(self, *args, **kwargs):
-        """Auto-preencher região ao salvar"""
-        self.regiao = self.get_regiao_from_estado()
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     """Auto-preencher região ao salvar"""
+    #     self.regiao = self.get_regiao_from_estado()
+    #     super().save(*args, **kwargs)
     
 @property
 def regiao(self):

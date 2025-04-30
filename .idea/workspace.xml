@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Debug postos">
+    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Corrigido o bug de não ter nome do municipio se não existir o municipio">
+      <change afterPath="$PROJECT_DIR$/revendas-24_04_2025.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dash_postos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/importexcel.py" beforeDir="false" afterPath="$PROJECT_DIR$/importexcel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postos_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/postos_app/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +63,9 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Django Server.Postos-BigData.executor&quot;: &quot;Run&quot;,
+    &quot;Python.importexcel.executor&quot;: &quot;Run&quot;,
     &quot;Python.manage.executor&quot;: &quot;Run&quot;,
+    &quot;Python.models.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -76,6 +81,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\joao0\Documents\GitHub\Postos-BigData" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Postos-BigData" />
@@ -131,6 +141,8 @@
       <workItem from="1745492216230" duration="133000" />
       <workItem from="1745837334752" duration="5899000" />
       <workItem from="1745922412705" duration="1680000" />
+      <workItem from="1745974130655" duration="27000" />
+      <workItem from="1746044377839" duration="583000" />
     </task>
     <task id="LOCAL-00001" summary="Debug postos">
       <option name="closed" value="true" />
@@ -151,6 +163,8 @@
     <option name="LAST_COMMIT_MESSAGE" value="Debug postos" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Postos_BigData$manage.coverage" NAME="manage Coverage Results" MODIFIED="1745492321062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Postos_BigData$models.coverage" NAME="models Coverage Results" MODIFIED="1745927576932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/postos_app" />
+    <SUITE FILE_PATH="coverage/Postos_BigData$manage.coverage" NAME="manage Coverage Results" MODIFIED="1746044383090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Postos_BigData$importexcel.coverage" NAME="importexcel Coverage Results" MODIFIED="1745927582373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

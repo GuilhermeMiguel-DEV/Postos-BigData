@@ -107,7 +107,7 @@ def dashboard_cidade(request):
         bairro__isnull=True
     ).exclude(
         bairro__exact=''
-    ).exclude(produto__iexact='GLP')
+    ).exclude(produto__iexact='GLP').order_by('data_coleta')
     
     # Filtro adicional por produto se especificado
     if produto:
@@ -121,12 +121,20 @@ def dashboard_cidade(request):
             'preco': float(posto.preco_revenda),
             'bandeira': posto.bandeira,
             'numero': posto.numero,
-            'endereco': posto.endereco
+            'endereco': posto.endereco,
+            'data_coleta': posto.data_coleta
         })
     
     # Cria DataFrame para análise
+
     df = pd.DataFrame(dados_bairros)
-    
+
+    df['data_coleta'] = pd.to_datetime(df['data_coleta'])
+
+    # Mantém apenas o registro mais recente de cada posto
+    df = df.sort_values('data_coleta').drop_duplicates(subset=['numero'], keep='last')
+
+
     # Se não houver dados, mostra mensagem
     if df.empty:
         return render(request, 'dashboard/dashboard_cidade.html', {
@@ -170,7 +178,7 @@ def dashboard_cidade(request):
     # print(postos_unicos)
     # print('='*15)
     # print(df)
-    total_postos_cidade = len(df)
+    total_postos_cidade = len(postos_unicos)
     preco_medio_cidade = df['preco'].mean()
     total_bairros = len(bairros_stats)
 
