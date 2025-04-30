@@ -2,6 +2,9 @@ import unicodedata
 from matplotlib import pyplot as plt
 from io import BytesIO
 import base64
+import plotly.express as px
+
+
 def normalizar_nome(texto):
     """Normaliza nomes removendo acentos, espaços extras e convertendo para maiúsculas"""
     if not texto:
@@ -25,3 +28,16 @@ def gerar_grafico(labels, valores, titulo, eixo_y):
     plt.savefig(buffer, format='png', dpi=80, bbox_inches='tight')
     plt.close()
     return base64.b64encode(buffer.getvalue()).decode()
+
+
+def gerar_grafico_ply(df, x, y, title, media):
+    grafico = px.bar(
+        df,
+        x=x,
+        y=y,
+        title=title,
+        labels={x: 'Bairro', y: 'Preço Médio (R$)'},
+        color=media,
+        color_continuous_scale='Greens'
+    )
+    return grafico

@@ -12,7 +12,9 @@ import base64
 from io import BytesIO
 
 from postos_app.models import Postos
-from .utils import normalizar_nome, gerar_grafico
+from .utils import normalizar_nome, gerar_grafico, gerar_grafico_ply
+import plotly.io as pio
+
 
 def dashboard_brasil(request):
     # Configurações das regiões
@@ -147,27 +149,25 @@ def dashboard_cidade(request):
         total_postos=('bairro_normalizado', 'size'),
         preco_medio=('preco', 'mean')
     ).reset_index().sort_values('total_postos', ascending=False)
-    
-    # Cria gráfico de barras de postos por bairro
-    plt.figure(figsize=(10, 6))
-    ax = bairros_stats.head(10).plot.bar(
-        x='bairro_normalizado', 
-        y='total_postos',
-        color='skyblue',
-        legend=False
-    )
-    plt.title(f'Top 10 Bairros com Mais Postos em {municipio}')
-    plt.xlabel('Bairro')
-    plt.ylabel('Número de Postos')
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-    
+
     # Converte gráfico para imagem base64
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    grafico_bairros = base64.b64encode(buffer.read()).decode('utf-8')
-    plt.close()
+
+    bairros_df = df.groupby('bairro_normalizado').agg(
+        preco_medio=('preco', 'mean'),
+        total_postos=('bairro_normalizado', 'count')
+    ).reset_index()
+
+    bairros_df = bairros_df.sort_values('preco_medio')
+
+    grafico_1 = gerar_grafico_ply(
+        bairros_df.head(10),
+        'bairro_normalizado',
+        'preco_medio',
+        f'Top 10 Bairros com Menor Preço Médio - {municipio}',
+        'preco_medio'
+    )
+    grafico_bairros = pio.to_html(grafico_1, full_html=False)
+
     
     # Prepara dados para a tabela
     tabela_bairros = bairros_stats.to_dict('records')

@@ -14,6 +14,7 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 
+
     <!-- Estilos customizados -->
     <style type="text/css">
         /* Container principal */
@@ -38,7 +39,7 @@
     </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="bg-dark text-white">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container-fluid">
@@ -73,7 +74,7 @@
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     
     <!-- Plotly -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
 
     {% block extra_js %}{% endblock %}
 </body>
