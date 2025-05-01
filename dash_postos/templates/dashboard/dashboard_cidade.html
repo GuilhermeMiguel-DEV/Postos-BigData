@@ -66,35 +66,24 @@
             </div>
         </div>
 
-        
-        <!-- Tabela de Bairros -->
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-table"></i> Detalhes por Bairro
+                <i class="fas fa-chart-bar"></i> Histórico de preço
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Bairro</th>
-                                <th>Total de Postos</th>
-                                <th>Preço Médio (R$)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for bairro in tabela_bairros %}
-                            <tr>
-                                <td>{{ bairro.bairro_normalizado }}</td>
-                                <td>{{ bairro.total_postos }}</td>
-                                <td>{{ bairro.preco_medio|floatformat:2 }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                {{ grafico_historico|safe }}
             </div>
         </div>
+
+        <div class="card mb-4">
+            <form method="get" action="{% url 'melhor_posto' %}">
+              <input placeholder="Município" type="text" name="municipio" value="{{ municipio }}">
+              <input placeholder="Bairro" type="text" name="bairro" value="{{ bairro }}">
+              <input placeholder="Produto" type="text" name="produto" value="{{ produto }}">
+              <button type="submit" class="btn btn-primary">Ver Melhor Posto</button>
+            </form>
+        </div>
+
     {% endif %}
 </div>
 

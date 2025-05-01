@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'dash_postos',
     'postos_app',
-    'plotly'
+    'plotly',
+    'folium'
 ]
 
 MIDDLEWARE = [
