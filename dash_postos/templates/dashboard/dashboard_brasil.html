@@ -19,7 +19,7 @@
                                    id="cidadeInput"
                                    placeholder="Digite uma cidade..."
                                    aria-label="Pesquisar cidade"
-                                   value="{{ request.GET.cidade|default:'' }}"
+                                   value="{{ request.GET.municipio|default:'' }}"
                                    required>
                             <button class="btn btn-primary" type="submit">
                                 <i class="fas fa-search"></i> Pesquisar
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Conteúdo do Dashboard Brasil (só mostra se não houver pesquisa de cidade) -->
-    {% if not request.GET.cidade %}
+    {% if not request.GET.municipio %}
         <!-- Filtros -->
         {% include 'dashboard/partials/filtros.html' %}
 

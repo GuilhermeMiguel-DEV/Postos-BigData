@@ -9,7 +9,7 @@ django.setup()
 from postos_app.models import Postos  # Agora o Django está configurado
 
 # Carregar o Excel
-df = pd.read_excel("postos.xlsx")  # Arquivo Excel com os dados
+df = pd.read_excel("revendas-24_04_2025.xlsx")  # Arquivo Excel com os dados
 
 # Inserir os dados no banco
 for _, row in df.iterrows():

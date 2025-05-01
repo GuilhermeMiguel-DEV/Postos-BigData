@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'dash_postos',
-    'postos_app'
+    'postos_app',
+    'plotly',
+    'folium'
 ]
 
 MIDDLEWARE = [

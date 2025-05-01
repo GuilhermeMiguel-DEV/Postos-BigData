@@ -12,7 +12,9 @@ import base64
 from io import BytesIO
 
 from postos_app.models import Postos
-from .utils import normalizar_nome, gerar_grafico
+from .utils import normalizar_nome, gerar_grafico, gerar_grafico_ply, gerar_grafico_historico_precos
+import plotly.io as pio
+
 
 def dashboard_brasil(request):
     # Configurações das regiões
@@ -76,7 +78,7 @@ def dashboard_brasil(request):
         'postos': pagina_obj,
         'grafico_preco': grafico_precos,
         'grafico_estados': grafico_estados,
-        'total_postos': postos.count(),
+        'total_postos': postos.values('numero', 'produto').distinct().count(),
         'preco_medio': postos.aggregate(Avg('preco_revenda'))['preco_revenda__avg'] or 0,
         'total_estados': postos.values('estado').distinct().count(),
         'regioes': sorted(REGIOES_BRASIL.keys()),
@@ -95,85 +97,155 @@ def dashboard_brasil(request):
 def dashboard_cidade(request):
     municipio = request.GET.get('municipio', '').strip()
     produto = request.GET.get('produto', '').strip()
-    
-    # Se cidade estiver vazia, redireciona para o dashboard Brasil
+    bairro = request.GET.get('bairro', '').strip()
+
     if not municipio:
         return redirect('dashboard_brasil')
-    
-    # Filtra os postos pelo municipio (case-insensitive)
-    postos = Postos.objects.filter(
-        municipio__iexact=municipio
-    ).exclude(
-        bairro__isnull=True
-    ).exclude(
-        bairro__exact=''
-    )
-    
-    # Filtro adicional por produto se especificado
+
+    postos = Postos.objects.filter(municipio__iexact=municipio)
+    postos = postos.exclude(bairro__isnull=True).exclude(bairro__exact='')
+    postos = postos.exclude(produto__iexact='GLP')
+
     if produto:
         postos = postos.filter(produto__iexact=produto)
-    
-    # Normaliza os nomes dos bairros e agrupa
+    if bairro:
+        postos = postos.filter(bairro__iexact=bairro)
+
     dados_bairros = []
     for posto in postos:
         dados_bairros.append({
             'bairro_normalizado': normalizar_nome(posto.bairro),
             'preco': float(posto.preco_revenda),
-            'bandeira': posto.bandeira
+            'bandeira': posto.bandeira,
+            'numero': posto.numero,
+            'endereco': posto.endereco,
+            'data_coleta': posto.data_coleta,
+            'produto': posto.produto,
+            'link_google_maps': f"https://www.google.com/maps/search/?api=1&query={posto.endereco.replace(' ', '+')},{posto.numero}"
         })
-    
-    # Cria DataFrame para análise
+
     df = pd.DataFrame(dados_bairros)
-    
-    # Se não houver dados, mostra mensagem
+    df['data_coleta'] = pd.to_datetime(df['data_coleta'], errors='coerce')
+
+    # Remove duplicatas de postos considerando número + produto para contabilizar corretamente
+    df = df.sort_values('data_coleta').drop_duplicates(subset=['numero', 'produto'], keep='last')
+
     if df.empty:
         return render(request, 'dashboard/dashboard_cidade.html', {
-            'cidade': municipio,
+            'municipio': municipio,
             'sem_dados': True
         })
-    
-    # Agrupa por bairro para estatísticas
+
     bairros_stats = df.groupby('bairro_normalizado').agg(
-        total_postos=('bairro_normalizado', 'size'),
+        total_postos=('numero', 'nunique'),
         preco_medio=('preco', 'mean')
     ).reset_index().sort_values('total_postos', ascending=False)
-    
-    # Cria gráfico de barras de postos por bairro
-    plt.figure(figsize=(10, 6))
-    ax = bairros_stats.head(10).plot.bar(
-        x='bairro_normalizado', 
-        y='total_postos',
-        color='skyblue',
-        legend=False
+
+    bairros_df = df.groupby('bairro_normalizado').agg(
+        preco_medio=('preco', 'mean'),
+        total_postos=('numero', 'nunique')
+    ).reset_index().sort_values('preco_medio')
+
+    grafico_1 = gerar_grafico_ply(
+        bairros_df.head(10),
+        'bairro_normalizado',
+        'preco_medio',
+        f'Top 10 Bairros com Menor Preço Médio - {municipio}',
+        'preco_medio'
     )
-    plt.title(f'Top 10 Bairros com Mais Postos em {municipio}')
-    plt.xlabel('Bairro')
-    plt.ylabel('Número de Postos')
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-    
-    # Converte gráfico para imagem base64
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    grafico_bairros = base64.b64encode(buffer.read()).decode('utf-8')
-    plt.close()
-    
-    # Prepara dados para a tabela
-    tabela_bairros = bairros_stats.to_dict('records')
-    
-    # Calcula estatísticas gerais
-    total_postos_cidade = len(df)
+    grafico_bairros = pio.to_html(grafico_1, full_html=False)
+
+    total_postos_cidade = df['numero'].nunique()
     preco_medio_cidade = df['preco'].mean()
     total_bairros = len(bairros_stats)
-    
-    return render(request, 'dashboard/dashboard_cidade.html', {
+
+    grafico_2 = gerar_grafico_historico_precos(df)
+    grafico_2 = pio.to_html(grafico_2, full_html=False)
+
+    bairros_disponiveis = sorted(df['bairro_normalizado'].unique())
+    produtos_disponiveis = sorted(df['produto'].unique())
+
+    # Melhor sugestão de economia
+    melhor_posto = df.sort_values('preco').iloc[0].to_dict()
+    economia = round(preco_medio_cidade - melhor_posto['preco'], 2)
+
+    context = {
         'municipio': municipio,
         'produto': produto or 'Todos',
+        'bairro': bairro,
         'grafico_bairros': grafico_bairros,
-        'tabela_bairros': tabela_bairros,
+        'grafico_historico': grafico_2,
         'total_postos_cidade': total_postos_cidade,
         'preco_medio_cidade': round(preco_medio_cidade, 2),
         'total_bairros': total_bairros,
-        'top_bairros': bairros_stats.head(10).to_dict('records')
-    })
+        'top_bairros': bairros_stats.head(10).to_dict('records'),
+        'bairros_disponiveis': bairros_disponiveis,
+        'produtos_disponiveis': produtos_disponiveis,
+        'melhor_posto': melhor_posto,
+        'economia': economia
+    }
+
+    return render(request, 'dashboard/dashboard_cidade.html', context)
+
+
+def melhor_posto(request):
+    bairro = request.GET.get('bairro', '').upper().strip()
+    produto = request.GET.get('produto', '').upper().strip()
+    municipio = request.GET.get('municipio', '').strip().upper()
+
+    if not municipio:
+        return redirect('dashboard_brasil')
+
+    # Filtro para postos na cidade
+    postos = Postos.objects.filter(municipio__iexact=municipio)
+    postos = postos.exclude(bairro__isnull=True).exclude(bairro__exact='')
+    postos = postos.exclude(produto__iexact='GLP')
+
+    if produto:
+        postos = postos.filter(produto__iexact=produto)
+    if bairro:
+        postos = postos.filter(bairro__iexact=bairro)
+
+    dados_bairros = []
+    for posto in postos:
+        dados_bairros.append({
+            'bairro_normalizado': normalizar_nome(posto.bairro),
+            'preco': float(posto.preco_revenda),
+            'bandeira': posto.bandeira,
+            'numero': posto.numero,
+            'endereco': posto.endereco,
+            'data_coleta': posto.data_coleta,
+            'produto': posto.produto,
+            'link_google_maps': f"https://www.google.com/maps/search/?api=1&query={posto.endereco.replace(' ', '+')},{posto.numero}"
+        })
+
+    df = pd.DataFrame(dados_bairros)
+    df['data_coleta'] = pd.to_datetime(df['data_coleta'], errors='coerce')
+
+    # Remove duplicatas para considerar um único posto por produto
+    df = df.sort_values('data_coleta').drop_duplicates(subset=['numero', 'produto'], keep='last')
+
+    # Sugestão de economia: Melhor posto para abastecer
+    melhor_posto = df.sort_values('preco').iloc[0].to_dict()
+    economia = round(df['preco'].mean() - melhor_posto['preco'], 2)
+
+    # Gráficos
+    grafico_1 = gerar_grafico_ply(
+        df.groupby('bairro_normalizado').agg(preco_medio=('preco', 'mean')).reset_index(),
+        'bairro_normalizado', 'preco_medio', f'Menor Preço Médio - {municipio}', 'preco_medio'
+    )
+
+    grafico_2 = gerar_grafico_historico_precos(df)
+
+    context = {
+        'municipio': municipio,
+        'bairro': bairro,
+        'produto': produto,
+        'melhor_posto': melhor_posto,
+        'economia': economia,
+        'grafico_bairros': pio.to_html(grafico_1, full_html=False),
+        'grafico_historico': pio.to_html(grafico_2, full_html=False),
+    }
+
+    return render(request, 'dashboard/melhor_posto.html', context)
+

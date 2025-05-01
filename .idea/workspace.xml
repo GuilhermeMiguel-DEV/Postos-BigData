@@ -4,47 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/BigDataPostos/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/templates/base.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/templates/dashboard/dashboard_brasil.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/templates/dashboard/partials/filtros.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/dash_postos/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/db.sqlite3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/importexcel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/templates/postos_app/postos_tabela.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/postos_app/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Postos-BigData-main/requeriment.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dash_postos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Adição do template de melhor_posto e melhoria na filtragem" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,6 +12,14 @@
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
     <envs>
@@ -78,12 +46,22 @@
     &quot;assignee&quot;: &quot;JoaoVictorCarvalho-DEV&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/GuilhermeMiguel-DEV/Postos-BigData.git&quot;,
-    &quot;accountId&quot;: &quot;0086434d-05d8-45bc-beca-ac4e32c6e0ed&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/GuilhermeMiguel-DEV/Postos-BigData.git",
+    "accountId": "0086434d-05d8-45bc-beca-ac4e32c6e0ed"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "GuilhermeMiguel-DEV",
+    "repository": "Postos-BigData"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -94,12 +72,17 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "Django Server.Postos-BigData.executor": "Run",
+    "JavaScript Debug.heatmap_postos.html.executor": "Run",
+    "Python.importexcel.executor": "Run",
     "Python.manage.executor": "Run",
+    "Python.models.executor": "Run",
+    "Python.teste_heatmap.executor": "Run",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "dashboard-cidades-jv",
+    "git-widget-placeholder": "#7 on nova-mod",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/joao0/Documents/GitHub/Postos-BigData",
     "node.js.detected.package.eslint": "true",
@@ -111,7 +94,15 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\joao0\Documents\GitHub\Postos-BigData" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.manage">
+    <configuration name="heatmap_postos.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Postos-BigData/heatmap_postos.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Postos-BigData" />
       <option name="ENV_FILES" value="" />
@@ -137,6 +128,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.heatmap_postos.html" />
         <item itemvalue="Python.manage" />
       </list>
     </recent_temporary>
@@ -165,13 +157,60 @@
       <workItem from="1745492082013" duration="108000" />
       <workItem from="1745492216230" duration="133000" />
       <workItem from="1745837334752" duration="5899000" />
+      <workItem from="1745922412705" duration="1680000" />
+      <workItem from="1745974130655" duration="27000" />
+      <workItem from="1746044377839" duration="4067000" />
+      <workItem from="1746101823973" duration="5513000" />
     </task>
+    <task id="LOCAL-00001" summary="Debug postos">
+      <option name="closed" value="true" />
+      <created>1745847379826</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1745847379826</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Corrigido o bug de não ter nome do municipio se não existir o municipio">
+      <option name="closed" value="true" />
+      <created>1746044985222</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746044985222</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Alterando gráfico para plotly">
+      <option name="closed" value="true" />
+      <created>1746047638400</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1746047638401</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Adição do template de melhor_posto e melhoria na filtragem">
+      <option name="closed" value="true" />
+      <created>1746109290750</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746109290750</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Debug postos" />
+    <MESSAGE value="Corrigido o bug de não ter nome do municipio se não existir o municipio" />
+    <MESSAGE value="Alterando gráfico para plotly" />
+    <MESSAGE value="Adição do template de melhor_posto e melhoria na filtragem" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adição do template de melhor_posto e melhoria na filtragem" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Postos_BigData$manage.coverage" NAME="manage Coverage Results" MODIFIED="1745492321062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Postos_BigData$models.coverage" NAME="models Coverage Results" MODIFIED="1745927576932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/postos_app" />
+    <SUITE FILE_PATH="coverage/Postos_BigData$manage.coverage" NAME="manage Coverage Results" MODIFIED="1746044383090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Postos_BigData$teste_heatmap.coverage" NAME="teste_heatmap Coverage Results" MODIFIED="1746048362395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Postos_BigData$importexcel.coverage" NAME="importexcel Coverage Results" MODIFIED="1745927582373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
