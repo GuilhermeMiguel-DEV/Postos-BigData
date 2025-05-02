@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard de Postos - {{ municipio }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid ">
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Dashboard de Postos - {{ municipio }}</h1>
+        <a href="{% url 'dashboard_brasil' %}" class="btn text-white" style="background-color: #01380b">
+            <i class="fas fa-arrow-left"></i> Voltar para dashboard do Brasil
+        </a>
+    </div>
+    
+    <!-- Filtro Atual
+    <div class="alert alert-info">
+        <h4>
+            <i class="fas fa-filter"></i> Filtro Atual: 
+            <span class="badge bg-primary">{{ produto }}</span>
+        </h4>
+    </div>
+    -->
+    {% if sem_dados %}
+        <div class="alert alert-warning">
+            <h4>Nenhum dado encontrado para {{ municipio }}</h4>
+            <p>Não encontramos postos cadastrados nesta cidade.</p>
+        </div>
+    {% else %}
+        <!-- Estatísticas Rápidas -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white h-100" style="background-color: #005f13">
+                    <div class="card-body">
+                        <h5 class="card-title">Postos(cadastrados) na Cidade</h5>
+                        <h2 class="card-text">{{total_postos_cidade}}</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card text-white h-100" style="background-color: #013b10">
+                    <div class="card-body">
+                        <h5 class="card-title">Preço Médio</h5>
+                        <h2 class="card-text">R$ {{ preco_medio_cidade }}</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card text-white h-100" style="background-color: #012106">
+                    <div class="card-body">
+                        <h5 class="card-title">Bairros com Postos</h5>
+                        <h2 class="card-text">{{ total_bairros }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-2">
+            <!-- Gráfico de Preço Médio por Bairro com Plotly -->
+            <div class=" col card bg-dark mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i> Top 10 Bairros com Menor Preço Médio
+                </div>
+                <div class="card-body">
+                    {{ grafico_bairros|safe }}
+                </div>
+            </div>
+
+            <div class="col card bg-dark mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i> Histórico de preço
+                </div>
+                <div class="card-body">
+                    {{ grafico_historico|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="card bg-dark mb-4">
+            <form method="get" action="{% url 'melhor_posto' %}">
+              <input placeholder="Município" type="text" name="municipio" value="{{ municipio }}">
+              <input placeholder="Bairro" type="text" name="bairro">
+              <input placeholder="Produto" type="text" name="produto">
+              <button type="submit" class="btn btn-primary">Ver Melhor Posto</button>
+            </form>
+        </div>
+
+    {% endif %}
+</div>
+
+<script>
+    document.getElementById('cidadeForm').addEventListener('submit', function(e) {
+        const cidadeInput = document.getElementById('cidadeInput');
+        if (cidadeInput.value.trim() === '') {
+            e.preventDefault(); // Impede o envio do formulário
+            window.location.href = "{% url 'dashboard_brasil' %}"; // Redireciona para o dashboard Brasil
+        }
+    });
+</script>
+{% endblock %}
