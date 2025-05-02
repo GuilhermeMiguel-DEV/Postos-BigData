@@ -1,27 +1,52 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container bg-dark">
-  <h2>Melhor Posto para Abastecer em {{ municipio }}</h2>
+<div class="container bg-dark text-light p-4 rounded">
+  <h2 class="mb-4">Melhor Posto para Abastecer em {{ municipio }}</h2>
 
   {% if melhor_posto %}
-      <p><strong>Bairro:</strong> {{ melhor_posto.bairro_normalizado }}</p>
-      <p><strong>Posto:</strong> {{ melhor_posto.bandeira }} - {{ melhor_posto.endereco }}, {{ melhor_posto.numero }}</p>
-      <p><strong>Produto:</strong> {{ melhor_posto.produto }}</p>
-      <p><strong>Preço:</strong> R$ {{ melhor_posto.preco }}</p>
-      <p><strong>Data da coleta:</strong> {{ melhor_posto.data_coleta|date:"d/m/Y" }}</p>
-      <p><strong>Economia estimada:</strong> R$ {{ economia }}</p>
+      <div class="card bg-secondary text-white mb-4">
+          <div class="card-body">
+              <h5 class="card-title">Informações do Posto</h5>
+              <p class="card-text"><strong>Bairro:</strong> {{ melhor_posto.bairro_normalizado }}</p>
+              <p class="card-text"><strong>Posto:</strong> {{ melhor_posto.bandeira }} - {{ melhor_posto.endereco }}, {{ melhor_posto.numero }}</p>
+              <p class="card-text"><strong>Produto:</strong> {{ melhor_posto.produto }}</p>
+              <p class="card-text"><strong>Preço:</strong> R$ {{ melhor_posto.preco }}</p>
+              <p class="card-text"><strong>Data da coleta:</strong> {{ melhor_posto.data_coleta|date:"d/m/Y" }}</p>
+              <p class="card-text"><strong>Economia estimada:</strong> R$ {{ economia }}</p>
+          </div>
+      </div>
 
-      <hr>
-      <h4>Gráfico de Preço Médio por Bairro</h4>
-      {{ grafico_bairros|safe }}
+      <div class="d-flex justify-content-between mb-4">
+          <a href="{% url 'dashboard_cidade' %}?municipio={{ municipio }}&produto={{ produto }}" 
+             class="btn btn-primary">
+             <i class="fas fa-arrow-left"></i> Voltar ao Dashboard da sua cidade
+          </a>
+          
+          <a href="{{ melhor_posto.link_google_maps }}" 
+             target="_blank" 
+             class="btn btn-success">
+             <i class="fas fa-map-marker-alt"></i> Ver no Mapa
+          </a>
+      </div>
 
-      <h4>Histórico de Preços</h4>
-      {{ grafico_historico|safe }}
+      <div class="mb-4">
+          <h4>Gráfico de Preço Médio por Bairro</h4>
+          {{ grafico_bairros|safe }}
+      </div>
+
+      <div class="mb-4">
+          <h4>Histórico de Preços</h4>
+          {{ grafico_historico|safe }}
+      </div>
   {% else %}
-      <p>Nenhum dado disponível para o filtro selecionado.</p>
+      <div class="alert alert-warning">
+          <p>Nenhum dado disponível para o filtro selecionado.</p>
+          <div class="d-flex justify-content-between mb-4">
+            <a href="{% url 'dashboard_cidade' %}" class="btn btn-primary">
+              <i class="fas fa-arrow-left"></i>Voltar ao Dashboard padrão
+            </a>
+          </div>
+      </div>
   {% endif %}
-
-  <a href="{% url 'dashboard_cidade' %}?municipio={{ municipio }}&produto={{ produto }}">Voltar</a>
-
-  </div>
+</div>
 {% endblock %}
