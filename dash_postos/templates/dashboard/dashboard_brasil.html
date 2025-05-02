@@ -9,7 +9,7 @@
     <!-- Barra de Pesquisa por Cidade - MODIFICADA PARA REDIRECIONAMENTO -->
     <div class="row mb-4">
         <div class="col-md-6 offset-md-3">
-            <div class="card">
+            <div class="card bg-dark">
                 <div class="card-body">
                     <form id="cidadeForm" method="get" action="{% url 'dashboard_cidade' %}">
                         <div class="input-group">
@@ -21,7 +21,7 @@
                                    aria-label="Pesquisar cidade"
                                    value="{{ request.GET.municipio|default:'' }}"
                                    required>
-                            <button class="btn btn-primary" type="submit">
+                            <button class="btn text-white" style="background-color: #01380b" type="submit">
                                 <i class="fas fa-search"></i> Pesquisar
                             </button>
                         </div>
@@ -44,7 +44,7 @@
         <div class="row">
             <!-- Gráfico 1 -->
             <div class="col-md-6">
-                <div class="card mb-4">
+                <div class="card bg-dark mb-4">
                     <div class="card-header">
                         <i class="fas fa-chart-bar me-1"></i>
                         Preço Médio por Produto
@@ -60,7 +60,7 @@
             
             <!-- Gráfico 2 -->
             <div class="col-md-6">
-                <div class="card mb-4">
+                <div class="card bg-dark mb-4">
                     <div class="card-header">
                         <i class="fas fa-map-marked-alt me-1"></i>
                         Distribuição por Estado
@@ -78,7 +78,7 @@
         <!-- Estatísticas -->
         <div class="row mb-4">
             <div class="col-md-4">
-                <div class="card text-white bg-primary h-100">
+                <div class="card  text-white h-100" style="background-color: #005f13">
                     <div class="card-body">
                         <h5 class="card-title">Postos Cadastrados</h5>
                         <h2 class="card-text">{{ total_postos }}</h2>
@@ -87,7 +87,7 @@
             </div>
             
             <div class="col-md-4">
-                <div class="card text-white bg-success h-100">
+                <div class="card text-white h-100" style="background-color: #013b10">
                     <div class="card-body">
                         <h5 class="card-title">Preço Médio</h5>
                         <h2 class="card-text">R$ {{ preco_medio|floatformat:2 }}</h2>
@@ -96,7 +96,7 @@
             </div>
             
             <div class="col-md-4">
-                <div class="card text-white bg-info h-100">
+                <div class="card text-white h-100" style="background-color: #002309">
                     <div class="card-body">
                         <h5 class="card-title">Estados Atendidos</h5>
                         <h2 class="card-text">{{ total_estados }}</h2>

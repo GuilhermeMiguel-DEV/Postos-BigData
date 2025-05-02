@@ -54,10 +54,10 @@ def gerar_grafico_historico_precos(df):
     df = df.dropna(subset=['data_coleta', 'preco', 'bairro_normalizado'])
 
     # Filtrar últimos 30 dias
-    ultimos_30 = df[df['data_coleta'] > pd.Timestamp.today() - pd.Timedelta(days=90)]
+    ultimos_30 = df[df['data_coleta'] > pd.Timestamp.today() - pd.Timedelta(days=30)]
 
     # Agrupar dados
-    historico = ultimos_30.groupby(['data_coleta', 'bairro_normalizado']).agg(
+    historico = ultimos_30.groupby(['data_coleta', 'razao']).agg(
         preco_medio=('preco', 'mean')
     ).reset_index()
 
@@ -71,14 +71,14 @@ def gerar_grafico_historico_precos(df):
         historico,
         x='data_coleta',
         y='preco_medio',
-        color='bairro_normalizado',
+        color='razao',
         markers=True,  # Mostra pontos
         line_shape='linear',  # Usa linhas retas entre os pontos
-        title='Histórico de Preços por Bairro (Últimos 30 dias)',
+        title='Histórico de Preços por posto (Últimos 30 dias)',
         labels={
             'data_coleta': 'Data',
             'preco_medio': 'Preço Médio (R$)',
-            'bairro_normalizado': 'Bairro'
+            'razao': 'Posto'
         }
     )
 
@@ -88,7 +88,6 @@ def gerar_grafico_historico_precos(df):
         xaxis_title='Data',
         yaxis_title='Preço Médio (R$)',
         hovermode='x unified',
-        template='plotly_white'
     )
 
     return fig

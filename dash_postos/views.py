@@ -15,6 +15,8 @@ from postos_app.models import Postos
 from .utils import normalizar_nome, gerar_grafico, gerar_grafico_ply, gerar_grafico_historico_precos
 import plotly.io as pio
 
+pio.templates.default = "plotly_dark"
+
 
 def dashboard_brasil(request):
     # Configurações das regiões
@@ -115,13 +117,13 @@ def dashboard_cidade(request):
     for posto in postos:
         dados_bairros.append({
             'bairro_normalizado': normalizar_nome(posto.bairro),
+            'razao' : normalizar_nome(posto.razao),
             'preco': float(posto.preco_revenda),
             'bandeira': posto.bandeira,
             'numero': posto.numero,
             'endereco': posto.endereco,
             'data_coleta': posto.data_coleta,
-            'produto': posto.produto,
-            'link_google_maps': f"https://www.google.com/maps/search/?api=1&query={posto.endereco.replace(' ', '+')},{posto.numero}"
+            'produto': posto.produto
         })
 
     df = pd.DataFrame(dados_bairros)
@@ -192,7 +194,6 @@ def melhor_posto(request):
     bairro = request.GET.get('bairro', '').upper().strip()
     produto = request.GET.get('produto', '').upper().strip()
     municipio = request.GET.get('municipio', '').strip().upper()
-
     if not municipio:
         return redirect('dashboard_brasil')
 
@@ -210,6 +211,7 @@ def melhor_posto(request):
     for posto in postos:
         dados_bairros.append({
             'bairro_normalizado': normalizar_nome(posto.bairro),
+            'razao': normalizar_nome(posto.razao),
             'preco': float(posto.preco_revenda),
             'bandeira': posto.bandeira,
             'numero': posto.numero,
@@ -249,3 +251,6 @@ def melhor_posto(request):
 
     return render(request, 'dashboard/melhor_posto.html', context)
 
+
+def home_page(request):
+    return render(request, 'dashboard/home_page.html')

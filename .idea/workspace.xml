@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Adição do template de melhor_posto e melhoria na filtragem" />
+    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Adição do template de melhor_posto e melhoria na filtragem">
+      <change afterPath="$PROJECT_DIR$/dash_postos/static/dash_postos/images/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/home_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BigDataPostos/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/BigDataPostos/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BigDataPostos/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/BigDataPostos/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_brasil.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/dashboard_cidade.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/partials/filtros.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/partials/filtros.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,22 +59,22 @@
     &quot;assignee&quot;: &quot;JoaoVictorCarvalho-DEV&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/GuilhermeMiguel-DEV/Postos-BigData.git",
-    "accountId": "0086434d-05d8-45bc-beca-ac4e32c6e0ed"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/GuilhermeMiguel-DEV/Postos-BigData.git&quot;,
+    &quot;accountId&quot;: &quot;0086434d-05d8-45bc-beca-ac4e32c6e0ed&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "GuilhermeMiguel-DEV",
-    "repository": "Postos-BigData"
+    &quot;owner&quot;: &quot;GuilhermeMiguel-DEV&quot;,
+    &quot;repository&quot;: &quot;Postos-BigData&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -70,33 +83,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.Postos-BigData.executor": "Run",
-    "JavaScript Debug.heatmap_postos.html.executor": "Run",
-    "Python.importexcel.executor": "Run",
-    "Python.manage.executor": "Run",
-    "Python.models.executor": "Run",
-    "Python.teste_heatmap.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#7 on nova-mod",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/joao0/Documents/GitHub/Postos-BigData",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.intellij.python.django.customization.DjangoModulesConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.Postos-BigData.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.heatmap_postos.html.executor&quot;: &quot;Run&quot;,
+    &quot;Python.importexcel.executor&quot;: &quot;Run&quot;,
+    &quot;Python.manage.executor&quot;: &quot;Run&quot;,
+    &quot;Python.models.executor&quot;: &quot;Run&quot;,
+    &quot;Python.teste_heatmap.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/joao0/Documents/GitHub/Postos-BigData&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.python.django.customization.DjangoModulesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\joao0\Documents\GitHub\Postos-BigData" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\joao0\Documents\GitHub\Postos-BigData\dash_postos\static\dash_postos" />
+      <recent name="C:\Users\joao0\Documents\GitHub\Postos-BigData\dash_postos" />
+      <recent name="C:\Users\joao0\Documents\GitHub\Postos-BigData\dash_postos\templates\static\images" />
     </key>
   </component>
   <component name="RunManager" selected="Python.manage">
@@ -161,6 +179,9 @@
       <workItem from="1745974130655" duration="27000" />
       <workItem from="1746044377839" duration="4067000" />
       <workItem from="1746101823973" duration="5513000" />
+      <workItem from="1746134473475" duration="1612000" />
+      <workItem from="1746182332925" duration="381000" />
+      <workItem from="1746191045282" duration="1707000" />
     </task>
     <task id="LOCAL-00001" summary="Debug postos">
       <option name="closed" value="true" />
