@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Criação da página inicial e mudança de rota">
+      <change afterPath="$PROJECT_DIR$/dash_postos/views/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dash_postos/views/dashboard_cidade.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dash_postos/views/dashboard_melhor_posto.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dash_postos/views/home_page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/views/dashboard_brasil.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/views/dashboard_brasil.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,11 +179,6 @@
       <workItem from="1746134473475" duration="1612000" />
       <workItem from="1746182332925" duration="381000" />
       <workItem from="1746191045282" duration="2816000" />
-      <workItem from="1746440288485" duration="38000" />
-      <workItem from="1746441095641" duration="15000" />
-      <workItem from="1746441272671" duration="12000" />
-      <workItem from="1746441357578" duration="3000" />
-      <workItem from="1746447180503" duration="224000" />
     </task>
     <task id="LOCAL-00001" summary="Debug postos">
       <option name="closed" value="true" />
