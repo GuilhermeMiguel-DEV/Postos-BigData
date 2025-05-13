@@ -5,6 +5,9 @@ import base64
 import plotly.express as px
 import pandas as pd
 
+import requests
+import os
+
 
 def normalizar_nome(texto):
     """Normaliza nomes removendo acentos, espaços extras e convertendo para maiúsculas"""
@@ -91,3 +94,75 @@ def gerar_grafico_historico_precos(df):
     )
 
     return fig
+
+
+
+
+def ler_arquivo(nome_arquivo):
+  """Lê o conteúdo de um arquivo .txt.
+
+  Args:
+    nome_arquivo: O nome do arquivo a ser lido.
+
+  Returns:
+    O conteúdo do arquivo como uma string, ou None se ocorrer um erro.
+  """
+  try:
+    with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+      conteudo = arquivo.read()
+    return conteudo
+  except FileNotFoundError:
+    print(f"Erro: Arquivo '{nome_arquivo}' não encontrado.")
+    return None
+  except Exception as e:
+    print(f"Erro ao ler o arquivo: {e}")
+    return None
+
+
+def escrever_arquivo(nome_arquivo, conteudo):
+  """Escreve o conteúdo em um arquivo .txt.
+
+  Args:
+    nome_arquivo: O nome do arquivo a ser escrito.
+    conteudo: O conteúdo a ser escrito no arquivo.
+  """
+  try:
+    with open(nome_arquivo, 'a', encoding='utf-8') as arquivo:
+      arquivo.writelines(conteudo)
+    print(f"Conteúdo escrito com sucesso em '{nome_arquivo}'.")
+  except Exception as e:
+    print(f"Erro ao escrever no arquivo: {e}")
+
+
+def perguntar_gemini(info_posto,  municipio, bairro, produto ):
+    # Substitua 'YOUR_GEMINI_API_KEY' pela sua chave de API real
+    api_key = ''
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY environment variable not set.")
+
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + api_key
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+
+    if info_posto:
+        data = {
+            "contents": {
+                "parts": {"text": f"Sugira de forma breve sem links e tem austerísticos, o melhor posto em {municipio} {bairro} e com o produto {produto}(caso não haja produto, diga uma sugestão para alguns produtos) a partir dessas informações: " + info_posto}
+            }
+        }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    if response.status_code == 200:
+        texto = response.json().get('candidates')[0].get('content').get('parts')[0].get('text')
+
+        return texto
+
+    else:
+       return 'Erro.'
+    # response.text
+
+

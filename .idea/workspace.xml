@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Ajustes visuais" />
+    <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Ajustes visuais">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/templates/dashboard/melhor_posto.html" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/templates/dashboard/melhor_posto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dash_postos/views/dashboard_melhor_posto.py" beforeDir="false" afterPath="$PROJECT_DIR$/dash_postos/views/dashboard_melhor_posto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requeriment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requeriment.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -170,6 +177,7 @@
       <workItem from="1746134473475" duration="1612000" />
       <workItem from="1746182332925" duration="381000" />
       <workItem from="1746191045282" duration="2816000" />
+      <workItem from="1747130995214" duration="3394000" />
     </task>
     <task id="LOCAL-00001" summary="Debug postos">
       <option name="closed" value="true" />
