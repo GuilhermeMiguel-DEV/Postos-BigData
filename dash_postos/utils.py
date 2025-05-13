@@ -136,7 +136,7 @@ def escrever_arquivo(nome_arquivo, conteudo):
 
 def perguntar_gemini(info_posto,  municipio, bairro, produto ):
     # Substitua 'YOUR_GEMINI_API_KEY' pela sua chave de API real
-    api_key = 'AIzaSyDYYSbo0JzERHMwSHMZ7GlAj5OXj0keoQM'
+    api_key = ''
     if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable not set.")
 
