@@ -6,3 +6,4 @@ dash==2.11.1
 requests==2.31.0
 matplotlib==3.10.1
 folium = 0.19.5
+google-genai==1.14.0

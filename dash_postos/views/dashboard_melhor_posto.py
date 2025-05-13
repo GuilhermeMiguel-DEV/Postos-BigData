@@ -4,7 +4,8 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 import pandas as pd
 from postos_app.models import Postos
-from dash_postos.utils import normalizar_nome, gerar_grafico, gerar_grafico_ply, gerar_grafico_historico_precos
+from dash_postos.utils import normalizar_nome, gerar_grafico, gerar_grafico_ply, gerar_grafico_historico_precos, \
+    perguntar_gemini
 import plotly.io as pio
 
 pio.templates.default = "plotly_dark"
@@ -71,6 +72,9 @@ def melhor_posto(request):
     try:
         melhor_posto = df.sort_values('preco').iloc[0].to_dict()
         economia = round(df['preco'].mean() - melhor_posto['preco'], 2)
+        #Sugerir o melhor posto por IA
+        resposta_ia = perguntar_gemini(df.to_string(), municipio, bairro, produto)
+
     except (KeyError, IndexError):
         return render(request, 'dashboard/melhor_posto.html', {
             'municipio': municipio,
@@ -97,6 +101,7 @@ def melhor_posto(request):
         'bairro': bairro,
         'produto': produto,
         'melhor_posto': melhor_posto,
+        'resposta_ia': resposta_ia,
         'economia': economia,
         'grafico_bairros': pio.to_html(grafico_1, full_html=False) if grafico_1 else '',
         'grafico_historico': pio.to_html(grafico_2, full_html=False) if grafico_2 else '',
