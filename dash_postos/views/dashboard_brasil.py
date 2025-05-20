@@ -59,46 +59,51 @@ def dashboard_brasil(request):
     if produto:
         postos = postos.filter(produto__iexact=produto)
 
-    # Dados para gráficos
+   # Gráfico de Barras para Produtos
     dados_produtos = postos.values('produto').annotate(
         preco_medio=Avg('preco_revenda'),
         total=Count('id')
     ).order_by('-preco_medio')
     
-    # Gráfico de Pizza para Produtos
-    fig_produtos = px.pie(
+    grafico_produtos = px.bar(
         dados_produtos,
-        names='produto',
-        values='preco_medio',
-        title='Distribuição de Preços por Produto',
-        hole=0.3,
+        x='produto',
+        y='preco_medio',
+        title='PREÇO MÉDIO POR PRODUTO',
+        labels={'produto': 'Produto', 'preco_medio': 'Preço Médio (R$)'},
+        color='produto',
         color_discrete_sequence=px.colors.sequential.Greens_r
     )
-    fig_produtos.update_traces(textposition='inside', textinfo='percent+label')
-    grafico_produtos = pio.to_html(fig_produtos, full_html=False)
+    grafico_produtos.update_layout(showlegend=False)
 
-    # Gráfico de Linhas para Top Estados
+    # Gráfico de Pizza para Top 5 Estados
     dados_estados = postos.values('estado').annotate(
         total=Count('id')
     ).order_by('-total')[:5]
     
-    fig_estados = px.line(
+    grafico_estados = px.pie(
         dados_estados,
-        x='estado',
-        y='total',
-        title='Top 5 Estados (Evolução)',
-        markers=True,
-        line_shape='spline'
+        names='estado',
+        values='total',
+        title='DISTRIBUIÇÃO POR ESTADO (TOP 5)',
+        color_discrete_sequence=px.colors.sequential.Greens_r,
+        hole=0.3  # Cria efeito de donut
     )
-    fig_estados.update_traces(line=dict(width=4))
-    fig_estados.update_layout(yaxis_title='Quantidade de Postos')
-    grafico_estados = pio.to_html(fig_estados, full_html=False)
+    grafico_estados.update_traces(
+        textposition='inside',
+        textinfo='percent+label',
+        pull=[0.1, 0, 0, 0, 0]  # Destaque para o primeiro estado
+    )
+
+    # Converte os gráficos para HTML
+    grafico_produtos_html = pio.to_html(grafico_produtos, full_html=False)
+    grafico_estados_html = pio.to_html(grafico_estados, full_html=False)
 
     contexto = {
         'postos': Paginator(postos.order_by('estado', 'municipio'), 25).get_page(request.GET.get('page')),
         'estados_por_regiao': REGIOES_BRASIL.get(regiao, []) if regiao else [],
-        'grafico_produtos': grafico_produtos,
-        'grafico_estados': grafico_estados,
+        'grafico_produtos': grafico_produtos_html,
+        'grafico_estados': grafico_estados_html,
         'total_postos': postos.values('numero', 'produto').distinct().count(),
         'preco_medio': postos.aggregate(Avg('preco_revenda'))['preco_revenda__avg'] or 0,
         'total_estados': postos.values('estado').distinct().count(),

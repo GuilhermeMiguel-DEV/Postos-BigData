@@ -51,12 +51,12 @@ Estrutura:
 
             <!-- Seção de gráficos (exibida apenas quando não há pesquisa por cidade) -->
             <div class="row">
+                <!-- Gráfico de Barras - Preço por Produto -->
                 <div class="col-md-6">
-                    <!-- Gráfico de pizza - Distribuição por produto -->
                     <div class="card bg-dark mb-4">
                         <div class="card-header">
-                            <i class="fas fa-chart-pie me-1"></i>
-                            Distribuição de Preços por Produto
+                            <i class="fas fa-chart-bar me-1"></i>
+                            Preço Médio por Produto
                         </div>
                         <div class="card-body">
                             {{ grafico_produtos|safe }}
@@ -64,12 +64,12 @@ Estrutura:
                     </div>
                 </div>
                 
+                <!-- Gráfico de Pizza - Distribuição por Estado -->
                 <div class="col-md-6">
-                    <!-- Gráfico de linhas - Evolução por estado -->
                     <div class="card bg-dark mb-4">
                         <div class="card-header">
-                            <i class="fas fa-chart-line me-1"></i>
-                            Top 5 Estados (Evolução)
+                            <i class="fas fa-chart-pie me-1"></i>
+                            Top 5 Estados (Distribuição)
                         </div>
                         <div class="card-body">
                             {{ grafico_estados|safe }}
@@ -77,7 +77,6 @@ Estrutura:
                     </div>
                 </div>
             </div>
-        </div>
 
         <!-- Estatísticas -->
         <div class="row mb-4">
