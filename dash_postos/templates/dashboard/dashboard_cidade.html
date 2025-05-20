@@ -3,8 +3,21 @@
 {% block title %}Dashboard de Postos - {{ municipio }}{% endblock %}
 
 {% block content %}
-<div class="container-fluid ">
-    <!-- Cabeçalho -->
+<!--
+Template do dashboard por cidade.
+Exibe:
+1. Estatísticas resumidas da cidade
+2. Formulário para buscar o melhor posto
+3. Gráficos de preços por bairro e histórico
+
+Parâmetros esperados:
+- municipio: Nome do município filtrado
+- produto: (opcional) Tipo de combustível
+- bairro: (opcional) Bairro específico
+-->
+
+<div class="container-fluid">
+    <!-- Cabeçalho com título e botão de retorno -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Dashboard de Postos - {{ municipio }}</h1>
         <a href="{% url 'dashboard_brasil' %}" class="btn text-white" style="background-color: #01380b">
@@ -12,32 +25,27 @@
         </a>
     </div>
 
-    <!-- Filtro Atual
-    <div class="alert alert-info">
-        <h4>
-            <i class="fas fa-filter"></i> Filtro Atual: 
-            <span class="badge bg-primary">{{ produto }}</span>
-        </h4>
-    </div>
-    -->
     {% if sem_dados %}
+    <!-- Estado quando não há dados para o município -->
     <div class="alert alert-warning">
         <h4>Nenhum dado encontrado para {{ municipio }}</h4>
         <p>Não encontramos postos cadastrados nesta cidade.</p>
     </div>
     {% else %}
 
-    <!-- Estatísticas Rápidas -->
+    <!-- Seção de Estatísticas Rápidas -->
     <div class="row mb-4">
+        <!-- Card: Total de Postos -->
         <div class="col-md-4">
             <div class="card text-white h-100" style="background-color: #005f13">
                 <div class="card-body">
-                    <h5 class="card-title">Postos(cadastrados) na Cidade</h5>
-                    <h2 class="card-text">{{total_postos_cidade}}</h2>
+                    <h5 class="card-title">Postos na Cidade</h5>
+                    <h2 class="card-text">{{ total_postos_cidade }}</h2>
                 </div>
             </div>
         </div>
 
+        <!-- Card: Preço Médio -->
         <div class="col-md-4">
             <div class="card text-white h-100" style="background-color: #013b10">
                 <div class="card-body">
@@ -47,6 +55,7 @@
             </div>
         </div>
 
+        <!-- Card: Bairros com Postos -->
         <div class="col-md-4">
             <div class="card text-white h-100" style="background-color: #012106">
                 <div class="card-body">
@@ -57,24 +66,26 @@
         </div>
     </div>
 
-    {% load static %}
+    <!-- Formulário para Buscar Melhor Posto -->
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card bg-dark text-white shadow mb-4">
                 <div class="card-body">
-                    <h5 class="card-title text-success mb-4">Encontre o Melhor Posto para Abastecer</h5>
+                    <h5 class="card-title text-success mb-4">Encontre o Melhor Posto</h5>
                     <form method="get" action="{% url 'melhor_posto' %}">
-                        <div class="mb-3">
-                            <label for="municipio" class="form-label">Município</label>
-                            <input type="text" id="municipio" name="municipio" value="{{ municipio }}"
-                                   class="form-control bg-secondary text-white" placeholder="Digite o município"
-                                   required>
-                        </div>
+                        <!-- Campo Oculto para Município -->
+                        <input type="hidden" name="municipio" value="{{ municipio }}">
+                        
+                        <!-- Filtro de Bairro -->
                         <div class="mb-3">
                             <label for="bairro" class="form-label">Bairro</label>
-                            <input type="text" id="bairro" name="bairro" class="form-control bg-secondary text-white"
-                                   placeholder="Digite o bairro (opcional)">
+                            <input type="text" id="bairro" name="bairro" 
+                                   class="form-control bg-secondary text-white"
+                                   placeholder="Digite o bairro (opcional)"
+                                   value="{{ bairro|default:'' }}">
                         </div>
+                        
+                        <!-- Filtro de Produto -->
                         <div class="mb-3">
                             <label for="produto" class="form-label">Produto</label>
                             <select name="produto" id="produto" class="form-select bg-secondary text-white">
@@ -86,17 +97,20 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success w-100" style="background-color: #013b10">Ver Melhor
-                            Posto
+                        
+                        <button type="submit" class="btn btn-success w-100" style="background-color: #013b10">
+                            Ver Melhor Posto
                         </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Seção de Gráficos -->
     <div class="row row-cols-1">
-        <!-- Gráfico de Preço Médio por Bairro com Plotly -->
-        <div class=" col card bg-dark mb-4">
+        <!-- Gráfico: Top 10 Bairros -->
+        <div class="col card bg-dark mb-4">
             <div class="card-header">
                 <i class="fas fa-chart-bar"></i> Top 10 Bairros com Menor Preço Médio
             </div>
@@ -105,27 +119,16 @@
             </div>
         </div>
 
+        <!-- Gráfico: Histórico de Preços -->
         <div class="col card bg-dark mb-4">
             <div class="card-header">
-                <i class="fas fa-chart-bar"></i> Histórico de preço
+                <i class="fas fa-chart-line"></i> Histórico de Preços
             </div>
             <div class="card-body">
                 {{ grafico_historico|safe }}
             </div>
         </div>
     </div>
-
-
     {% endif %}
 </div>
-
-<script>
-    document.getElementById('cidadeForm').addEventListener('submit', function (e) {
-        const cidadeInput = document.getElementById('cidadeInput');
-        if (cidadeInput.value.trim() === '') {
-            e.preventDefault(); // Impede o envio do formulário
-            window.location.href = "{% url 'dashboard_brasil' %}"; // Redireciona para o dashboard Brasil
-        }
-    });
-</script>
 {% endblock %}

@@ -10,7 +10,15 @@ import os
 
 
 def normalizar_nome(texto):
-    """Normaliza nomes removendo acentos, espaços extras e convertendo para maiúsculas"""
+  
+    """Normaliza strings removendo acentos, espaços extras e padronizando capitalização.
+    
+    Args:
+        texto (str): Texto a ser normalizado
+        
+    Returns:
+        str: Texto normalizado em Title Case sem acentos
+    """
     if not texto:
         return ""
     # Remove acentos
@@ -19,22 +27,22 @@ def normalizar_nome(texto):
     # Remove espaços extras e converte para Title Case
     return ' '.join(texto.strip().title().split())
 
-def gerar_grafico(labels, valores, titulo, eixo_y):
-    """Função auxiliar para gerar gráficos"""
-    plt.figure(figsize=(15, 8))
-    plt.bar(labels, valores, color='#3498db')
-    plt.title(titulo, pad=20)
-    plt.ylabel(eixo_y)
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png', dpi=80, bbox_inches='tight')
-    plt.close()
-    return base64.b64encode(buffer.getvalue()).decode()
-
 
 def gerar_grafico_ply(df, x, y, title, media):
+    """
+    Gera gráfico de barras interativo usando Plotly Express.
+    
+    Args:
+        df (DataFrame): Dados a serem plotados
+        x (str): Coluna para eixo X
+        y (str): Coluna para eixo Y
+        title (str): Título do gráfico
+        media (str): Coluna para cálculo de média
+        
+    Returns:
+        plotly.graph_objects.Figure: Objeto de figura do Plotly
+    """
+
     grafico = px.bar(
         df,
         x=x,
@@ -48,6 +56,16 @@ def gerar_grafico_ply(df, x, y, title, media):
 
 
 def gerar_grafico_historico_precos(df):
+    
+    """
+    Gera gráfico de linhas temporal com histórico de preços dos últimos 30 dias.
+    
+    Args:
+        df (DataFrame): Dados contendo colunas 'data_coleta', 'preco' e 'razao'
+        
+    Returns:
+        plotly.graph_objects.Figure: Gráfico de linhas interativo
+    """
     # Garantir formatos corretos
     df = df.copy()
     df['data_coleta'] = pd.to_datetime(df['data_coleta'], errors='coerce')
@@ -135,8 +153,21 @@ def escrever_arquivo(nome_arquivo, conteudo):
 
 
 def perguntar_gemini(info_posto,  municipio, bairro, produto ):
+    
+    """
+    Consulta a API Gemini para obter recomendações sobre postos.
+    
+    Args:
+        info_posto (str): Dados formatados do posto
+        municipio (str): Município de interesse
+        bairro (str): Bairro de interesse
+        produto (str): Tipo de combustível
+        
+    Returns:
+        str: Resposta textual da API Gemini
+    """
     # Substitua 'YOUR_GEMINI_API_KEY' pela sua chave de API real
-    api_key = ''
+    api_key = 'AIzaSyCBqkps62vJRK3WG9xrKxEnHIWJWcxwvXk'
     if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable not set.")
 

@@ -2,24 +2,40 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Avg, Count
 
-import matplotlib
-# Configura o backend para 'Agg' ANTES de importar pyplot
-matplotlib.use('Agg')  # Isso evita o uso do Tkinter
-from matplotlib import pyplot as plt
 import pandas as pd
 
 import base64
 from io import BytesIO
 
 from postos_app.models import Postos
-from dash_postos.utils import normalizar_nome, gerar_grafico, gerar_grafico_ply, gerar_grafico_historico_precos
+from dash_postos.utils import normalizar_nome, gerar_grafico_ply, gerar_grafico_historico_precos
 import plotly.io as pio
+import plotly.express as px
 
 pio.templates.default = "plotly_dark"
 
+"""
+Módulo de visualização do dashboard nacional.
+Exibe dados agregados de postos por região/estado com gráficos interativos.
+"""
+
 
 def dashboard_brasil(request):
-    # Configurações das regiões
+    """
+    View principal do dashboard nacional.
+    
+    Processa filtros e exibe:
+    - Gráfico de distribuição de preços por produto (pizza)
+    - Gráfico de evolução por estado (linhas)
+    - Estatísticas resumidas
+    
+    Parâmetros GET aceitos:
+    - regiao: Filtra por região (NORTE, NORDESTE, etc.)
+    - estado: Filtra por UF específica
+    - produto: Filtra por tipo de combustível
+    """
+
+    # Configurações constantes das regiões brasileiras
     REGIOES_BRASIL = {
         'NORTE': ['ACRE', 'AMAPÁ', 'AMAZONAS', 'PARÁ', 'RONDÔNIA', 'RORAIMA', 'TOCANTINS'],
         'NORDESTE': ['ALAGOAS', 'BAHIA', 'CEARÁ', 'MARANHÃO', 'PARAÍBA', 'PERNAMBUCO', 'PIAUÍ', 'RIO GRANDE DO NORTE', 'SERGIPE'],
@@ -28,16 +44,14 @@ def dashboard_brasil(request):
         'SUL': ['PARANÁ', 'RIO GRANDE DO SUL', 'SANTA CATARINA']
     }
 
-    # Filtros
+
     postos = Postos.objects.all()
     postos = postos.exclude(produto__iexact='GLP')
 
-    #Receber os filtros vindo do GET caso alguém decida filtrar os dados da página inicial
     regiao = request.GET.get('regiao')
     estado = request.GET.get('estado')
-    produto= request.GET.get('produto')
+    produto = request.GET.get('produto')
 
-    # Aplicação dos filtros
     if regiao:
         postos = postos.filter(estado__in=REGIOES_BRASIL[regiao])
     if estado:
@@ -45,40 +59,45 @@ def dashboard_brasil(request):
     if produto:
         postos = postos.filter(produto__iexact=produto)
 
-    # Paginação
-    paginador = Paginator(postos.order_by('estado', 'municipio'), 25)
-    numero_pagina = request.GET.get('page')
-    pagina_obj = paginador.get_page(numero_pagina)
-
     # Dados para gráficos
     dados_produtos = postos.values('produto').annotate(
         preco_medio=Avg('preco_revenda'),
         total=Count('id')
     ).order_by('-preco_medio')
-
-    # Geração dos gráficos
-    grafico_precos = gerar_grafico(
-        labels=[p['produto'] for p in dados_produtos],
-        valores=[float(p['preco_medio']) for p in dados_produtos],
-        titulo='PREÇO MÉDIO POR PRODUTO',
-        eixo_y='Preço (R$)'
+    
+    # Gráfico de Pizza para Produtos
+    fig_produtos = px.pie(
+        dados_produtos,
+        names='produto',
+        values='preco_medio',
+        title='Distribuição de Preços por Produto',
+        hole=0.3,
+        color_discrete_sequence=px.colors.sequential.Greens_r
     )
+    fig_produtos.update_traces(textposition='inside', textinfo='percent+label')
+    grafico_produtos = pio.to_html(fig_produtos, full_html=False)
 
+    # Gráfico de Linhas para Top Estados
     dados_estados = postos.values('estado').annotate(
         total=Count('id')
     ).order_by('-total')[:5]
-
-    grafico_estados = gerar_grafico(
-        labels=[e['estado'] for e in dados_estados],
-        valores=[e['total'] for e in dados_estados],
-        titulo='TOP 5 ESTADOS (POSTOS)',
-        eixo_y='Quantidade'
+    
+    fig_estados = px.line(
+        dados_estados,
+        x='estado',
+        y='total',
+        title='Top 5 Estados (Evolução)',
+        markers=True,
+        line_shape='spline'
     )
+    fig_estados.update_traces(line=dict(width=4))
+    fig_estados.update_layout(yaxis_title='Quantidade de Postos')
+    grafico_estados = pio.to_html(fig_estados, full_html=False)
 
-    # Contexto para o template
     contexto = {
-        'postos': pagina_obj,
-        'grafico_preco': grafico_precos,
+        'postos': Paginator(postos.order_by('estado', 'municipio'), 25).get_page(request.GET.get('page')),
+        'estados_por_regiao': REGIOES_BRASIL.get(regiao, []) if regiao else [],
+        'grafico_produtos': grafico_produtos,
         'grafico_estados': grafico_estados,
         'total_postos': postos.values('numero', 'produto').distinct().count(),
         'preco_medio': postos.aggregate(Avg('preco_revenda'))['preco_revenda__avg'] or 0,
@@ -94,4 +113,3 @@ def dashboard_brasil(request):
     }
 
     return render(request, 'dashboard/dashboard_brasil.html', contexto)
-
