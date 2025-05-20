@@ -167,7 +167,7 @@ def perguntar_gemini(info_posto,  municipio, bairro, produto ):
         str: Resposta textual da API Gemini
     """
     # Substitua 'YOUR_GEMINI_API_KEY' pela sua chave de API real
-    api_key = 'AIzaSyCBqkps62vJRK3WG9xrKxEnHIWJWcxwvXk'
+    api_key = ''
     if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable not set.")
 
