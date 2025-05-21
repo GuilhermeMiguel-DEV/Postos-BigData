@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0fea0fb5-4254-4c30-8d3e-f837f7496b5d" name="Changes" comment="Implementação de IA">
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -173,6 +174,7 @@
       <workItem from="1746182332925" duration="381000" />
       <workItem from="1746191045282" duration="2816000" />
       <workItem from="1747130995214" duration="3959000" />
+      <workItem from="1747863530992" duration="169000" />
     </task>
     <task id="LOCAL-00001" summary="Debug postos">
       <option name="closed" value="true" />
