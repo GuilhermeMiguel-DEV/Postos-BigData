@@ -1,17 +1,27 @@
+<!-- dashboard_brasil.html (modificado) -->
 {% extends "base.html" %}
 
 {% block title %}Dashboard de Postos - Brasil{% endblock %}
 
 {% block content %}
+<!--
+Template principal do dashboard nacional.
+Estrutura:
+1. Barra de pesquisa por cidade
+2. Filtros dinâmicos (região/estado/produto)
+3. Gráficos principais
+4. Cards de estatísticas
+-->
 <div class="container-fluid">
     <h1 class="my-4">Dashboard de Postos - Brasil</h1>
 
-    <!-- Barra de Pesquisa por Cidade - MODIFICADA PARA REDIRECIONAMENTO -->
-    <div class="row mb-4">
+    <!-- Barra de pesquisa com redirecionamento para dashboard de cidade -->
+   <div class="row mb-4">
         <div class="col-md-6 offset-md-3">
             <div class="card bg-dark">
                 <div class="card-body">
                     <form id="cidadeForm" method="get" action="{% url 'dashboard_cidade' %}">
+                        <!-- Input de pesquisa mantém estado através do request.GET -->
                         <div class="input-group">
                             <input type="text" 
                                    class="form-control" 
@@ -25,7 +35,7 @@
                                 <i class="fas fa-search"></i> Pesquisar
                             </button>
                         </div>
-                        <!-- Mantém o filtro de produto se existir -->
+                        <!-- Mantém filtro de produto se existir -->
                         {% if request.GET.produto %}
                         <input type="hidden" name="produto" value="{{ request.GET.produto }}">
                         {% endif %}
@@ -35,50 +45,43 @@
         </div>
     </div>
 
-    <!-- Conteúdo do Dashboard Brasil (só mostra se não houver pesquisa de cidade) -->
     {% if not request.GET.municipio %}
-        <!-- Filtros -->
-        {% include 'dashboard/partials/filtros.html' %}
+            <!-- Filtros -->
+            {% include 'dashboard/partials/filtros.html' %}
 
-        <!-- Seção de Gráficos -->
-        <div class="row">
-            <!-- Gráfico 1 -->
-            <div class="col-md-6">
-                <div class="card bg-dark mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-bar me-1"></i>
-                        Preço Médio por Produto
+            <!-- Seção de gráficos (exibida apenas quando não há pesquisa por cidade) -->
+            <div class="row">
+                <!-- Gráfico de Barras - Preço por Produto -->
+                <div class="col-md-6">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-1"></i>
+                            Preço Médio por Produto
+                        </div>
+                        <div class="card-body">
+                            {{ grafico_produtos|safe }}
+                        </div>
                     </div>
-                    <div class="card-body text-center">
-                        <img src="data:image/png;base64,{{ grafico_preco }}" 
-                             alt="Gráfico de Preços" 
-                             class="img-fluid"
-                             style="max-width: 100%; height: auto;">
+                </div>
+                
+                <!-- Gráfico de Pizza - Distribuição por Estado -->
+                <div class="col-md-6">
+                    <div class="card bg-dark mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-pie me-1"></i>
+                            Top 5 Estados (Distribuição)
+                        </div>
+                        <div class="card-body">
+                            {{ grafico_estados|safe }}
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Gráfico 2 -->
-            <div class="col-md-6">
-                <div class="card bg-dark mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-map-marked-alt me-1"></i>
-                        Distribuição por Estado
-                    </div>
-                    <div class="card-body text-center">
-                        <img src="data:image/png;base64,{{ grafico_estados }}" 
-                             alt="Gráfico de Estados" 
-                             class="img-fluid"
-                             style="max-width: 100%; height: auto;">
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Estatísticas -->
         <div class="row mb-4">
             <div class="col-md-4">
-                <div class="card  text-white h-100" style="background-color: #005f13">
+                <div class="card text-white h-100" style="background-color: #005f13">
                     <div class="card-body">
                         <h5 class="card-title">Postos Cadastrados</h5>
                         <h2 class="card-text">{{ total_postos }}</h2>
@@ -106,22 +109,87 @@
         </div>
     {% endif %}
 </div>
+{% endblock %}
 
-<!-- JavaScript para tratamento do formulário -->
+{% block extra_js %}
 <script>
+/**
+ * Scripts de controle do dashboard nacional
+ * - Validação do formulário de pesquisa
+ * - Controle de filtros dinâmicos
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Validação do formulário de pesquisa por cidade
     const form = document.getElementById('cidadeForm');
     const input = document.getElementById('cidadeInput');
     
     form.addEventListener('submit', function(e) {
-        // Validação básica - não faz nada se o campo estiver vazio
         if (input.value.trim() === '') {
             e.preventDefault();
-            // Opcional: mostrar mensagem para o usuário
             alert('Por favor, digite o nome de uma cidade');
             input.focus();
         }
-        // Se estiver preenchido, o formulário segue normalmente para dashboard_cidade
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Lógica de filtros dinâmicos região->estado
+    const regiaoSelect = document.getElementById('regiao');
+    const estadoSelect = document.getElementById('estado');
+    
+    // Função para carregar estados
+    async function carregarEstados(regiao) {
+        if (!regiao) {
+            estadoSelect.innerHTML = '<option value="">Todos os estados</option>';
+            estadoSelect.disabled = true;
+            return;
+        }
+        
+        try {
+            estadoSelect.disabled = true;
+            estadoSelect.innerHTML = '<option value="">Carregando...</option>';
+            
+            const response = await fetch(`/api/estados-por-regiao/?regiao=${regiao}`);
+            const data = await response.json();
+            
+            estadoSelect.innerHTML = '<option value="">Todos os estados</option>';
+            data.estados.forEach(estado => {
+                const option = document.createElement('option');
+                option.value = estado;
+                option.textContent = estado;
+                estadoSelect.appendChild(option);
+            });
+            
+            // Mantém o estado selecionado se ainda for válido
+            const estadoAtual = new URLSearchParams(window.location.search).get('estado');
+            if (estadoAtual && data.estados.includes(estadoAtual)) {
+                estadoSelect.value = estadoAtual;
+            }
+            
+            estadoSelect.disabled = false;
+        } catch (error) {
+            console.error('Erro ao carregar estados:', error);
+            estadoSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+        }
+    }
+    
+    // Carrega estados iniciais se já houver região selecionada
+    const regiaoInicial = regiaoSelect.value;
+    if (regiaoInicial) {
+        carregarEstados(regiaoInicial);
+    }
+    
+    // Atualiza estados quando região muda
+    regiaoSelect.addEventListener('change', function() {
+        carregarEstados(this.value);
+    });
+    
+    // Atualiza o formulário quando estado é alterado (opcional)
+    estadoSelect.addEventListener('change', function() {
+        if (this.value) {
+            document.getElementById('filtrosForm').submit();
+        }
     });
 });
 </script>

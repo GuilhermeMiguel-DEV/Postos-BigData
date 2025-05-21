@@ -1,44 +1,136 @@
-    <!-- Filtros -->
-    <div class="card bg-dark mb-4">
-        <div class="card-body">
-            <form method="get" class="row g-3">
-                <div class="col-md-3">
-                    <label for="regiao" class="form-label">Região</label>
-                    <select name="regiao" id="regiao" class="form-select">
-                        <option value="">Todas</option>
-                        <option value="NORTE" {% if request.GET.regiao == "NORTE" %}selected{% endif %}>Norte</option>
-                        <option value="NORDESTE" {% if request.GET.regiao == "NORDESTE" %}selected{% endif %}>Nordeste</option>
-                        <option value="CENTRO-OESTE" {% if request.GET.regiao == "CENTRO-OESTE" %}selected{% endif %}>Centro-Oeste</option>
-                        <option value="SUDESTE" {% if request.GET.regiao == "SUDESTE" %}selected{% endif %}>Sudeste</option>
-                        <option value="SUL" {% if request.GET.regiao == "SUL" %}selected{% endif %}>Sul</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-3">
-                    <label for="estado" class="form-label">Estado</label>
-                    <select name="estado" id="estado" class="form-select">
-                        <option value="">Todos</option>
-                        {% for estado in estados %}
-                        <option value="{{ estado }}" {% if request.GET.estado == estado %}selected{% endif %}>{{ estado }}</option>
+<!-- partials/filtros.html -->
+
+<!--
+Componente de filtros reutilizável para dashboards.
+Controles:
+- Seletor de região (atualiza estados dinamicamente via AJAX)
+- Seletor de estado (dependente da região selecionada)
+- Seletor de produto (independente)
+- Botões de ação (aplicar/limpar filtros)
+
+Estrutura:
+1. Formulário principal com 3 colunas de filtros + 1 coluna de ações
+2. Lógica dinâmica região->estado via JavaScript
+3. Manutenção de estado dos filtros selecionados
+-->
+
+<div class="card bg-dark mb-4">
+    <div class="card-body">
+        <!-- Formulário submetido via GET para permitir bookmarking -->
+        <form method="get" class="row g-3" id="filtrosForm">
+            <!-- Filtro de Região - Dispara atualização dos estados -->
+            <div class="col-md-3">
+                <label for="regiao" class="form-label">Região</label>
+                <select name="regiao" id="regiao" class="form-select dynamic-filter">
+                    <option value="">Todas as regiões</option>
+                    <option value="NORTE" {% if request.GET.regiao == "NORTE" %}selected{% endif %}>Norte</option>
+                    <option value="NORDESTE" {% if request.GET.regiao == "NORDESTE" %}selected{% endif %}>Nordeste</option>
+                    <option value="CENTRO-OESTE" {% if request.GET.regiao == "CENTRO-OESTE" %}selected{% endif %}>Centro-Oeste</option>
+                    <option value="SUDESTE" {% if request.GET.regiao == "SUDESTE" %}selected{% endif %}>Sudeste</option>
+                    <option value="SUL" {% if request.GET.regiao == "SUL" %}selected{% endif %}>Sul</option>
+                </select>
+            </div>
+            
+            <div class="col-md-3">
+                <!-- Filtro de Estado - Atualizado dinamicamente -->
+                <label for="estado" class="form-label">Estado</label>
+                <select name="estado" id="estado" class="form-select" {% if not request.GET.regiao %}disabled{% endif %}>
+                    <option value="">Todos os estados</option>
+                    {% if request.GET.regiao %}
+                        {% for estado in estados_por_regiao %}
+                            <option value="{{ estado }}" {% if request.GET.estado == estado %}selected{% endif %}>{{ estado }}</option>
                         {% endfor %}
-                    </select>
-                </div>
-                
-                <div class="col-md-3">
-                    <label for="produto" class="form-label">Produto</label>
-                    <select name="produto" id="produto" class="form-select">
-                        <option value="">Todos</option>
-                        {% for produto in produtos %}
-                        <option value="{{ produto }}" {% if request.GET.produto == produto %}selected{% endif %}>{{ produto }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn w-100 text-white" style="background-color: #01380b">
-                        <i class="fas fa-filter"></i> Filtrar
-                    </button>
-                </div>
-            </form>
-        </div>
+                    {% endif %}
+                </select>
+            </div>
+            
+            <div class="col-md-3">
+                <!-- Filtro de Produto - Independente -->
+                <label for="produto" class="form-label">Produto</label>
+                <select name="produto" id="produto" class="form-select">
+                    <option value="">Todos os produtos</option>
+                    {% for produto in produtos %}
+                    <option value="{{ produto }}" {% if request.GET.produto == produto %}selected{% endif %}>{{ produto }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="col-md-3 d-flex align-items-end gap-2">
+                <!-- Ações: Aplicar/Limpar Filtros -->
+                <button type="submit" class="btn text-white flex-grow-1" style="background-color: #01380b">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+                <!-- Botão para resetar todos os filtros -->
+                <a href="?" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+        </form>
     </div>
+</div>
+
+<!-- Script de controle dos filtros dinâmicos -->
+<script>
+/**
+ * Controla o comportamento dinâmico entre os filtros de região e estado.
+ * 
+ * Funcionalidades:
+ * 1. Atualiza os estados disponíveis quando a região muda
+ * 2. Mantém o estado selecionado quando válido
+ * 3. Habilita/desabilita o seletor de estados conforme necessário
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const regiaoSelect = document.getElementById('regiao');
+    const estadoSelect = document.getElementById('estado');
+    
+    /**
+     * Carrega os estados via AJAX baseado na região selecionada
+     * @param {string} regiao - Região selecionada (ex: 'SUDESTE')
+     */
+    async function carregarEstados(regiao) {
+        if (!regiao) {
+            estadoSelect.innerHTML = '<option value="">Todos os estados</option>';
+            estadoSelect.disabled = true;
+            return;
+        }
+        
+        try {
+            estadoSelect.disabled = true;
+            estadoSelect.innerHTML = '<option value="">Carregando...</option>';
+            
+            const response = await fetch(`/api/estados-por-regiao/?regiao=${regiao}`);
+            const data = await response.json();
+            
+            estadoSelect.innerHTML = '<option value="">Todos os estados</option>';
+            data.estados.forEach(estado => {
+                const option = document.createElement('option');
+                option.value = estado;
+                option.textContent = estado;
+                estadoSelect.appendChild(option);
+            });
+            
+            // Restaura seleção anterior se ainda for válida
+            const params = new URLSearchParams(window.location.search);
+            const estadoAtual = params.get('estado');
+            if (estadoAtual && data.estados.includes(estadoAtual)) {
+                estadoSelect.value = estadoAtual;
+            }
+            
+            estadoSelect.disabled = false;
+        } catch (error) {
+            console.error('Erro ao carregar estados:', error);
+            estadoSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+        }
+    }
+    
+    // Inicialização
+    if (regiaoSelect.value) {
+        carregarEstados(regiaoSelect.value);
+    }
+    
+    // Event Listeners
+    regiaoSelect.addEventListener('change', function() {
+        carregarEstados(this.value);
+    });
+});
+</script>
